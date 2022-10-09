@@ -6,13 +6,14 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/08 16:36:49 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/09 14:56:04 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
