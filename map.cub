@@ -2,9 +2,23 @@ SO ./texture/SO.xpm
 NO       ./texture/NO.xpm                   
 WE ./texture/WE.xpm    
 EA ./texture/EA.xpm    
-F 144,122,37
+F 			1447,172,371
 C       44,231,238
 
+
+
+F    ,,,
+F   14,787,7t778
+F   0,255,78
+
+
+
+
+
+
+layer 1 = check number of commas
+layer 2 = all the  charcters are either ',' or digits 
+layer 3 = check the range the validity of the numbers
 
 				1111111111111111
 				100000100000001

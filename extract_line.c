@@ -6,27 +6,27 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/09 17:17:36 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/09 22:43:17 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	parse_color_line(char *line)
-{
-	char	**tmp;
-	int		i;
+// void	parse_color_line(char *line)
+// {
+// 	//char	**tmp;
+// 	int		i;
 
-	i = 0;
-	while (line)
-	{
-		if (*line >= 48 && *line <= 57)
-			break ;
-		line++;
-	}
-	tmp = ft_split(line, ',');
-	printf("%s\n", tmp[0]);
-}
+// 	i = 0;
+// 	while (line)
+// 	{
+// 		if (*line >= 48 && *line <= 57)
+// 			break ;
+// 		line++;
+// 	}
+// 	//tmp = ft_split(line, ',');
+// 	printf("%s\n", line);
+// }
 
 int	num_of_comma(char *line)
 {
@@ -41,14 +41,70 @@ int	num_of_comma(char *line)
 	return (j);
 }
 
+
+int	is_space(char line)
+{
+	if ((line >= 9 && line <= 13) || line == ' ')
+		return (1);
+	return (0);
+}
+
+int		layerOneChecker(char *line)
+{
+	if ((line[0] == 'F' || line[0] == 'C') && (line[1] == ' ') && num_of_comma(line) == 2)
+		return (1);
+	return (0);
+}
+
+int		layerTwoChecker(char *line)
+{
+	int i;
+
+	i = 2;
+	while (line[i] && is_space(line[i]))
+		i++;
+	while (line[i])
+	{
+		if (!ft_isdigit(line[i]) && line[i] != ',')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		layerThreeChecker(char *line)
+{
+	int j = 0;
+	int i;
+	i = 2;
+	while (line[i] && is_space(line[i]))
+		i++;
+	int	strStart = i;
+	int len = strlen(line + i);
+	j = i;
+	while (line[i])
+	{
+		if (line[i] == ',' || len - 1 == i)
+		{
+			if (len - 1 == i)
+				i++;
+			printf("%s\n", ft_substr(line + strStart, j, i - j));
+			j = i+1;
+		}
+		i++;
+	}
+	return (1);
+}
+
 void	check_color_line(char *line, char *str)
 {
 	(void)line;
 	(void)str;
 	// char	*color;
-	if ((line[0] == 'F' || line[0] == 'C') && (line[1] == ' ') && num_of_comma(line) == 2)
+	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line))
 	{
-		parse_color_line(line);
+		// printf("cleaaaan\n");
+		return ;
 	}
 	else
 	{
