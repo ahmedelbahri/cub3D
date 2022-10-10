@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/08 16:39:17 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/10 13:01:47 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ char **read_map(char *av)
 	char	**content;
 	int 	fd;
 	int		j;
+	int		i;
 	
 	j = 0;
+	i = 0;
 	fd = open(av, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
 	while(get_next_line(fd))
-		j++;
-	content = malloc(sizeof(char *) * j);
+		i++;
+	content = malloc(sizeof(char *) * i);
 	if (!content)
 		return (printf("Malloc Error"), NULL);
 	close(fd);
@@ -41,7 +43,7 @@ char **read_map(char *av)
 	if (fd < 0)
 		return (NULL);
 	j = -1;
-	while(++j < 105)
+	while(++j < i)
 		content[j] = get_next_line(fd);
 	return (content);
 }

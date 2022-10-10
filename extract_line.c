@@ -6,27 +6,30 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/09 22:43:17 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/10 15:42:27 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-// void	parse_color_line(char *line)
-// {
-// 	//char	**tmp;
-// 	int		i;
+int	color_is_valid(char *color)
+{
+	int	i;
+	int	num;
 
-// 	i = 0;
-// 	while (line)
-// 	{
-// 		if (*line >= 48 && *line <= 57)
-// 			break ;
-// 		line++;
-// 	}
-// 	//tmp = ft_split(line, ',');
-// 	printf("%s\n", line);
-// }
+	i = 0;
+	while (color[i])
+	{
+		if (!ft_isdigit(color[i]))
+			return(0);
+		i++;
+	}
+	num = ft_atoi(color);
+	if (num > 255)
+		return (0);
+	free(color);
+	return (1);
+}
 
 int	num_of_comma(char *line)
 {
@@ -79,16 +82,15 @@ int		layerThreeChecker(char *line)
 	i = 2;
 	while (line[i] && is_space(line[i]))
 		i++;
-	int	strStart = i;
-	int len = strlen(line + i);
 	j = i;
 	while (line[i])
 	{
-		if (line[i] == ',' || len - 1 == i)
+		if (line[i] == ',' || !line[i + 1])
 		{
-			if (len - 1 == i)
+			if (!line[i + 1])
 				i++;
-			printf("%s\n", ft_substr(line + strStart, j, i - j));
+			if (!color_is_valid(ft_substr(line, j, i - j)))
+				return (0);
 			j = i+1;
 		}
 		i++;
@@ -96,14 +98,11 @@ int		layerThreeChecker(char *line)
 	return (1);
 }
 
-void	check_color_line(char *line, char *str)
+void	check_color_line(char *line)
 {
-	(void)line;
-	(void)str;
-	// char	*color;
 	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line))
 	{
-		// printf("cleaaaan\n");
+		// fill structure ...
 		return ;
 	}
 	else
@@ -113,22 +112,23 @@ void	check_color_line(char *line, char *str)
 	}
 }
 
-void	check_each_line(char *line, char *str)
+void	check_each_line(char *line, char *direction)
 {
 	int	i;
+	int	fd;
 	
 	i = -1;
-	if ((line[0] == str[0]) && (line[1] == str[1]) && (line[2] == str[2]) \
-	&& ft_strnstr(line, "./texture/", ft_strlen(line)))
+	if (!ft_strncmp(line, direction, 3) && ft_strnstr(line, "./texture/", ft_strlen(line)))
 	{
 		line = ft_strnstr(line, "./texture/", ft_strlen(line));
-		int fd = open(line, O_RDONLY);
+		fd = open(line, O_RDONLY);
 		if (fd < 0)
 		{
 			printf("FILE ERROR\n");
 			exit(1);
 		}
 		close(fd);
+		// fill structure ...
 	}
 	else
 	{
@@ -137,6 +137,17 @@ void	check_each_line(char *line, char *str)
 	}
 }
 
+// int	lines_before_map(char *content)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (content[i])
+// 	{
+// 		if (content[i] != '1')
+// 	}
+// }
+
 void	extract_line(char **content, t_data *data)
 {
 	(void)data;
@@ -144,21 +155,25 @@ void	extract_line(char **content, t_data *data)
 	char *line;
 
 	i = -1;
-	while(++i < 6)
+	while(++i < 20)
 	{
 		line = ft_strtrim(content[i], "\t \n");
-		if (ft_strcmp(line, "\0") && line[0] == 'N')
+		if (line[0] && line[0] == 'N')
 			check_each_line(line, "NO ");
-		else if (ft_strcmp(line, "\0") && line[0] == 'S')
+		else if (line[0] && line[0] == 'S')
 			check_each_line(line, "SO ");
-		else if (ft_strcmp(line, "\0") && line[0] == 'W')
+		else if (line[0] && line[0] == 'W')
 			check_each_line(line, "WE ");
-		else if (ft_strcmp(line, "\0") && line[0] == 'E')
+		else if (line[0] && line[0] == 'E')
 			check_each_line(line, "EA ");
-		else if (ft_strcmp(line, "\0") && line[0] == 'F')
-			check_color_line(line, "F ");
-		else if (ft_strcmp(line, "\0") && line[0] == 'C')
-			check_color_line(line, "C ");
+		else if (line[0] && line[0] == 'F')
+			check_color_line(line);
+		else if (line[0] && line[0] == 'C')
+			check_color_line(line);
+		else if (line[0])
+		{
+			printf("map Error\n");
+			exit(1);
+		}
 	}
-	//printf("%s", line);
 }
