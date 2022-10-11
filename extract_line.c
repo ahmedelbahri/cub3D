@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/10 15:42:27 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/11 22:42:32 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,16 +137,19 @@ void	check_each_line(char *line, char *direction)
 	}
 }
 
-// int	lines_before_map(char *content)
-// {
-// 	int	i;
+int	lines_before_map(char *content)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (content[i])
-// 	{
-// 		if (content[i] != '1')
-// 	}
-// }
+	i = 0;
+	while (content[i])
+	{
+		if (content[i] != '1' && content[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void	extract_line(char **content, t_data *data)
 {
@@ -155,6 +158,7 @@ void	extract_line(char **content, t_data *data)
 	char *line;
 
 	i = -1;
+	lines_before_map(ft_strtrim(content[0], "\n"));
 	while(++i < 20)
 	{
 		line = ft_strtrim(content[i], "\t \n");
