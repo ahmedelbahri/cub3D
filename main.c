@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/10 13:01:47 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/13 15:04:01 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int main(int ac, char **av)
 	content = read_map(av[1]);
 	if (!content)
 		return (printf("ERROR Argumenttt"), -1);
+	init_data(&data);
 	extract_line(content, &data);
 	// int i = -1;
 	// while(++i < 105)

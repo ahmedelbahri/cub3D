@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/12 19:50:36 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/13 15:48:34 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	num_of_comma(char *line)
 	i = -1;
 	j = 0;
 	while (line[++i])
-			if (line[i] == ',')
-				j++;
+		if (line[i] == ',')
+			j++;
 	return (j);
 }
 
@@ -77,8 +77,10 @@ int		layerTwoChecker(char *line)
 
 int		layerThreeChecker(char *line)
 {
-	int j = 0;
+	int j;
 	int i;
+
+	j = 0;
 	i = 2;
 	while (line[i] && is_space(line[i]))
 		i++;
@@ -98,11 +100,13 @@ int		layerThreeChecker(char *line)
 	return (1);
 }
 
-void	check_color_line(char *line)
+void	check_color_line(char *line, t_data *data)
 {
+	(void)data;
 	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line))
 	{
 		// fill structure ...
+		
 		return ;
 	}
 	else
@@ -112,7 +116,7 @@ void	check_color_line(char *line)
 	}
 }
 
-void	check_each_line(char *line, char *direction)
+void	check_each_line(char *line, char *direction, t_data *data)
 {
 	int	i;
 	int	fd;
@@ -129,6 +133,16 @@ void	check_each_line(char *line, char *direction)
 		}
 		close(fd);
 		// fill structure ...
+		if (data->SO == NULL && direction[0] == 'S')
+			data->SO = line;
+		else if (data->NO == NULL && direction[0] == 'N')
+			data->NO = line;
+		else if (data->EA == NULL && direction[0] == 'E')
+			data->EA = line;
+		else if (data->WE == NULL && direction[0] == 'W')
+			data->WE = line;
+		else
+			printf("Duplicate\n");
 	}
 	else
 	{
@@ -151,36 +165,49 @@ int	lines_before_map(char *content)
 	return (1);
 }
 
-void	extract_line(char **content, t_data *data)
+void	check_line(char *line, t_data *data, int *j)
 {
 	(void)data;
+	if (line[0] && line[0] == 'N')
+		check_each_line(line, "NO ", data);
+	else if (line[0] && line[0] == 'S')
+		check_each_line(line, "SO ", data);
+	else if (line[0] && line[0] == 'W')
+		check_each_line(line, "WE ", data);
+	else if (line[0] && line[0] == 'E')
+		check_each_line(line, "EA ", data);
+	else if (line[0] && line[0] == 'F')
+		check_color_line(line, data);
+	else if (line[0] && line[0] == 'C')
+		check_color_line(line, data);
+	else if (line[0])
+	{
+		printf("map Error\n");
+		return ;
+	}
+	else
+		*j+=1;
+}
+
+void	extract_line(char **content, t_data *data)
+{
 	int	i;
+	int	j;
 	char *line;
 
 	i = -1;
+	j = 0;
 	while(content[++i])
 	{
 		line = ft_strtrim(content[i], "\t \n");
-		if (line[0] && line[0] == 'N')
-			check_each_line(line, "NO ");
-		else if (line[0] && line[0] == 'S')
-			check_each_line(line, "SO ");
-		else if (line[0] && line[0] == 'W')
-			check_each_line(line, "WE ");
-		else if (line[0] && line[0] == 'E')
-			check_each_line(line, "EA ");
-		else if (line[0] && line[0] == 'F')
-			check_color_line(line);
-		else if (line[0] && line[0] == 'C')
-			check_color_line(line);
-		else if (line[0] && lines_before_map(line))
+		if (line[0] && lines_before_map(line))
 			break ;
-		else if (line[0])
-		{
-			printf("map Error\n");
-			// exit(1);
-		}
+		check_line(line, data, &j);
 	}
-	 if (i < 5)
-		printf("%d EERRRR\n", i);
+	if (i - j -1 < 5)
+		printf("Error\n");
+	// printf("##%s##\n", data->NO);
+	// printf("##%s##\n", data->SO);
+	// printf("##%s##\n", data->EA);
+	// printf("##%s##\n", data->WE);
 }

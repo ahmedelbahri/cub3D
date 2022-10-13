@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/09 14:56:04 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/13 15:04:28 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ typedef struct s_data
 //get_next_line
 char	*get_next_line(int fd);
 
+void	init_data(t_data *data);
 void	extract_line(char **content, t_data *data);
 #endif
