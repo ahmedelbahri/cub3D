@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/13 15:48:34 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/17 14:57:19 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,30 @@ int		layerTwoChecker(char *line)
 	return (1);
 }
 
-int		layerThreeChecker(char *line)
+// void	fill_data(char *num, char *line, t_data *data)
+// {
+// 	(void)data;
+// 	(void)line;
+// 	if (line[0] == 'C')
+// 	{
+// 		data->Floor[]
+// 	}
+// }
+
+int		layerThreeChecker(char *line, t_data *data)
 {
+	(void)data;
 	int j;
 	int i;
+	static int	k;
 
 	j = 0;
 	i = 2;
+	k = 0;
 	while (line[i] && is_space(line[i]))
 		i++;
 	j = i;
-	while (line[i])
+	while (i <= (int)ft_strlen(line))
 	{
 		if (line[i] == ',' || !line[i + 1])
 		{
@@ -93,6 +106,14 @@ int		layerThreeChecker(char *line)
 				i++;
 			if (!color_is_valid(ft_substr(line, j, i - j)))
 				return (0);
+			else
+			{
+				if (line[0] == 'C')
+					data->Floor[k++] = ft_atoi(ft_substr(line, j, i - j));
+				if (line[0] == 'F')
+					data->sky[k++] = ft_atoi(ft_substr(line, j, i - j));
+				//printf("[%s]\n", ft_substr(line, j, i - j));
+			}
 			j = i+1;
 		}
 		i++;
@@ -103,12 +124,8 @@ int		layerThreeChecker(char *line)
 void	check_color_line(char *line, t_data *data)
 {
 	(void)data;
-	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line))
-	{
-		// fill structure ...
-		
+	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line, data))
 		return ;
-	}
 	else
 	{
 		printf("Error color");
@@ -167,7 +184,6 @@ int	lines_before_map(char *content)
 
 void	check_line(char *line, t_data *data, int *j)
 {
-	(void)data;
 	if (line[0] && line[0] == 'N')
 		check_each_line(line, "NO ", data);
 	else if (line[0] && line[0] == 'S')
@@ -206,8 +222,14 @@ void	extract_line(char **content, t_data *data)
 	}
 	if (i - j -1 < 5)
 		printf("Error\n");
-	// printf("##%s##\n", data->NO);
-	// printf("##%s##\n", data->SO);
-	// printf("##%s##\n", data->EA);
-	// printf("##%s##\n", data->WE);
+	printf("##%s##\n", data->NO);
+	printf("##%s##\n", data->SO);
+	printf("##%s##\n", data->EA);
+	printf("##%s##\n", data->WE);
+	printf("##%d##\n", data->Floor[0]);
+	printf("##%d##\n", data->Floor[1]);
+	printf("##%d##\n", data->Floor[2]);
+	printf("##%d##\n", data->sky[0]);
+	printf("##%d##\n", data->sky[1]);
+	printf("##%d##\n", data->sky[2]);
 }
