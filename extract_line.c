@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/17 14:57:19 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:14:57 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ int		layerThreeChecker(char *line, t_data *data)
 			else
 			{
 				if (line[0] == 'C')
-					data->Floor[k++] = ft_atoi(ft_substr(line, j, i - j));
-				if (line[0] == 'F')
 					data->sky[k++] = ft_atoi(ft_substr(line, j, i - j));
+				if (line[0] == 'F')
+					data->Floor[k++] = ft_atoi(ft_substr(line, j, i - j));
 				//printf("[%s]\n", ft_substr(line, j, i - j));
 			}
 			j = i+1;
@@ -221,7 +221,12 @@ void	extract_line(char **content, t_data *data)
 		check_line(line, data, &j);
 	}
 	if (i - j -1 < 5)
-		printf("Error\n");
+		printf("Missing / Error\n");
+	else
+	{
+		// map...
+		printf("%d\n", i);
+	}
 	printf("##%s##\n", data->NO);
 	printf("##%s##\n", data->SO);
 	printf("##%s##\n", data->EA);

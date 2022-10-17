@@ -1,20 +1,16 @@
-C 50,50,50
-F 10,10,10
-SO         ./texture/SO.xpm
-NO       ./texture/NO.xpm                  
+C       150,150,255
+F        100,10,100
 
+
+
+
+
+SO         ./texture/SO.xpm
+     
+NO       ./texture/NO.xpm
 WE ./texture/WE.xpm
 
 EA ./texture/EA.xpm
-
-
-
-
-
-
-
-
-
 
 				1111111111111111
 				100000100000001 
