@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:57:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/13 15:03:38 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/24 13:32:54 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_data(t_data *data)
 	data->SO = NULL;
 	data->EA = NULL;
 	data->WE = NULL;
+	data->MAX_LINE = 0;
 	data->Floor[0] = -1;
 	data->Floor[1] = -1;
 	data->Floor[2] = -1;

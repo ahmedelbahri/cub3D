@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/17 16:14:57 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/24 19:23:08 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	is_space(char line)
 
 int		layerOneChecker(char *line)
 {
-	if ((line[0] == 'F' || line[0] == 'C') && (line[1] == ' ') && num_of_comma(line) == 2)
+	if ((line[0] == 'F' || line[0] == 'C') && (line[1] == ' ' || line[1] == '\t') && num_of_comma(line) == 2)
 		return (1);
 	return (0);
 }
@@ -139,7 +139,8 @@ void	check_each_line(char *line, char *direction, t_data *data)
 	int	fd;
 	
 	i = -1;
-	if (!ft_strncmp(line, direction, 3) && ft_strnstr(line, "./texture/", ft_strlen(line)))
+	if ((!ft_strncmp(line, direction, 3) || !ft_strncmp(&line[2], "\t", 1)) \
+	&& ft_strnstr(line, "./texture/", ft_strlen(line)))
 	{
 		line = ft_strnstr(line, "./texture/", ft_strlen(line));
 		fd = open(line, O_RDONLY);
@@ -159,7 +160,10 @@ void	check_each_line(char *line, char *direction, t_data *data)
 		else if (data->WE == NULL && direction[0] == 'W')
 			data->WE = line;
 		else
+		{
 			printf("Duplicate\n");
+			exit(1);
+		}
 	}
 	else
 	{
@@ -199,20 +203,35 @@ void	check_line(char *line, t_data *data, int *j)
 	else if (line[0])
 	{
 		printf("map Error\n");
-		return ;
+		exit(1) ;
 	}
 	else
 		*j+=1;
 }
 
-void	extract_line(char **content, t_data *data)
+void	tallest_line(char **content, int i, t_data *data)
+{
+	while (content[i])
+	{
+		int len = ft_strlen(ft_strtrim(content[i], "\n"));
+		if(data->MAX_LINE < len)
+			data->MAX_LINE = len;
+		//printf("max = %d	  %s",data->MAX_LINE, content[i]);
+		i++;
+	}
+}
+
+void	extract_line(char **content, t_data *data, t_info *info)
 {
 	int	i;
 	int	j;
+	int	k;
+	int	z;
 	char *line;
 
 	i = -1;
 	j = 0;
+	k = 0;
 	while(content[++i])
 	{
 		line = ft_strtrim(content[i], "\t \n");
@@ -225,16 +244,46 @@ void	extract_line(char **content, t_data *data)
 	else
 	{
 		// map...
-		printf("%d\n", i);
+		//printf("i = %d    info = %d\n", i, info->num_lines);
+		tallest_line(content, i, data);
+		data->map = malloc(sizeof(char *) * info->num_lines - i);
+		while (k < info->num_lines)
+		{
+			data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
+			k++;
+		}
+		k = 0;
+		int p = info->num_lines - i;
+		while (k < p)
+		{
+			data->map[k] = content[i];
+			z = ft_strlen(data->map[k]);
+			while (z < data->MAX_LINE)
+			{
+				data->map[k][z] = 'z';
+				if (z + 1 == data->MAX_LINE)
+					data->map[k][z + 1] = '\0'; 
+				z++;
+			}
+			i++;
+			k++;
+		}
+		data->map[k] = NULL;
+		printf("%s", data->map[0]);
+		printf("%s", data->map[1]);
+		printf("%s", data->map[2]);
+		printf("%s", data->map[3]);
+		// printf("%s", data->map[4]);
+		return ;
 	}
-	printf("##%s##\n", data->NO);
-	printf("##%s##\n", data->SO);
-	printf("##%s##\n", data->EA);
-	printf("##%s##\n", data->WE);
-	printf("##%d##\n", data->Floor[0]);
-	printf("##%d##\n", data->Floor[1]);
-	printf("##%d##\n", data->Floor[2]);
-	printf("##%d##\n", data->sky[0]);
-	printf("##%d##\n", data->sky[1]);
-	printf("##%d##\n", data->sky[2]);
+	// printf("##%s##\n", data->NO);
+	// printf("##%s##\n", data->SO);
+	// printf("##%s##\n", data->EA);
+	// printf("##%s##\n", data->WE);
+	// printf("##%d##\n", data->Floor[0]);
+	// printf("##%d##\n", data->Floor[1]);
+	// printf("##%d##\n", data->Floor[2]);
+	// printf("##%d##\n", data->sky[0]);
+	// printf("##%d##\n", data->sky[1]);
+	// printf("##%d##\n", data->sky[2]);
 }

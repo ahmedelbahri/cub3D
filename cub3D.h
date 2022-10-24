@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/13 16:18:58 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/24 16:58:28 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,21 @@ typedef struct s_data
 	char	*SO;
 	char	*WE;
 	char	*EA;
+	char	**map;
 	int		Floor[3];
 	int		sky[3];
+	int		MAX_LINE;
 	
 }t_data;
+
+typedef struct s_info
+{
+	int	num_lines;
+}t_info;
 
 //get_next_line
 char	*get_next_line(int fd);
 
 void	init_data(t_data *data);
-void	extract_line(char **content, t_data *data);
+void	extract_line(char **content, t_data *data, t_info *info);
 #endif
