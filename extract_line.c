@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/24 19:23:08 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/25 11:56:42 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,8 @@ void	extract_line(char **content, t_data *data, t_info *info)
 		// map...
 		//printf("i = %d    info = %d\n", i, info->num_lines);
 		tallest_line(content, i, data);
-		data->map = malloc(sizeof(char *) * info->num_lines - i);
-		while (k < info->num_lines)
+		data->map = malloc(sizeof(char *) * info->num_lines - i + 1);
+		while (k < info->num_lines - i)
 		{
 			data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
 			k++;
@@ -256,8 +256,8 @@ void	extract_line(char **content, t_data *data, t_info *info)
 		int p = info->num_lines - i;
 		while (k < p)
 		{
-			data->map[k] = content[i];
-			z = ft_strlen(data->map[k]);
+			content[i] = ft_strtrim(content[i], "\n");
+			z = ft_strlcpy(data->map[k], content[i], data->MAX_LINE + 1);
 			while (z < data->MAX_LINE)
 			{
 				data->map[k][z] = 'z';
@@ -265,16 +265,25 @@ void	extract_line(char **content, t_data *data, t_info *info)
 					data->map[k][z + 1] = '\0'; 
 				z++;
 			}
+			//printf("%s\n", data->map[k]);
 			i++;
 			k++;
 		}
 		data->map[k] = NULL;
-		printf("%s", data->map[0]);
-		printf("%s", data->map[1]);
-		printf("%s", data->map[2]);
-		printf("%s", data->map[3]);
-		// printf("%s", data->map[4]);
-		return ;
+	}
+	k = 0;
+	int s = 0;
+	while (data->map[k])
+	{
+		s = 0;
+		while (data->map[k][s])
+		{
+			if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
+				data->map[k][s] = 'z';
+			s++;
+		}
+		printf("%s\n", data->map[k]);
+		k++;
 	}
 	// printf("##%s##\n", data->NO);
 	// printf("##%s##\n", data->SO);
