@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/31 12:25:09 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/31 13:48:34 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,28 +250,46 @@ void	malloc_map(t_data *data, char **content, t_info *info, int i)
 	data->map[k] = NULL;
 }
 
+void	fill_direction(t_data *data, int k, int s)
+{
+	if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
+		data->map[k][s] = '*';
+	else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' 
+	|| data->map[k][s] == 'W' || data->map[k][s] == 'N')
+	{
+		if (data->Direction)
+		{
+			printf("Direction full\n");
+			exit(1);
+		}
+		data->Direction = data->map[k][s];
+		data->X = k;
+		data->Y = s;
+		data->map[k][s] = '0';
+	}
+	else if (data->map[k][s] != '0' && data->map[k][s] != '1' 
+	&& data->map[k][s] != '*')
+	{
+		printf("invalid map\n");
+			exit(1);
+	}
+}
+
 void	fill_map_with_z(t_data *data)
 {
-	int s, k;
-	k = s = 0;
+	int	s;
+	int	k;
+
+	k = 0;
+	s = 0;
 	while (data->map[k])
 	{
 		s = 0;
 		while (data->map[k][s])
 		{
-			if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
-				data->map[k][s] = '*';
-			else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' 
-			|| data->map[k][s] == 'W' || data->map[k][s] == 'N')
-			{
-				data->Direction = data->map[k][s];
-				data->X = k;
-				data->Y = s;
-				data->map[k][s] = '0';
-			}
+			fill_direction(data, k, s);
 			s++;
 		}
-		//printf("%s\n", data->map[k]);
 		k++;
 	}
 }
@@ -338,14 +356,17 @@ void	extract_line(char **content, t_data *data, t_info *info)
 		check_map_error(data, info);
 	}
 	
-	// printf("##%s##\n", data->NO);
-	// printf("##%s##\n", data->SO);
-	// printf("##%s##\n", data->EA);
-	// printf("##%s##\n", data->WE);
-	// printf("##%d##\n", data->Floor[0]);
-	// printf("##%d##\n", data->Floor[1]);
-	// printf("##%d##\n", data->Floor[2]);
-	// printf("##%d##\n", data->sky[0]);
-	// printf("##%d##\n", data->sky[1]);
-	// printf("##%d##\n", data->sky[2]);
+	printf("##%s##\n", data->NO);
+	printf("##%s##\n", data->SO);
+	printf("##%s##\n", data->EA);
+	printf("##%s##\n", data->WE);
+	printf("##%d##\n", data->Floor[0]);
+	printf("##%d##\n", data->Floor[1]);
+	printf("##%d##\n", data->Floor[2]);
+	printf("##%d##\n", data->sky[0]);
+	printf("##%d##\n", data->sky[1]);
+	printf("##%d##\n", data->sky[2]);
+	printf("##%c##\n", data->Direction);
+	printf("##%d##\n", data->X);
+	printf("##%d##\n", data->Y);
 }
