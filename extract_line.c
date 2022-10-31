@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/31 13:48:34 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/31 15:47:52 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,7 +346,10 @@ void	extract_line(char **content, t_data *data, t_info *info)
 		check_line(line, data, &j);
 	}
 	if (i - j -1 < 5)
+	{
 		printf("Missing / Error\n");
+		exit(1);
+	}
 	else
 	{
 		// map...
@@ -354,6 +357,11 @@ void	extract_line(char **content, t_data *data, t_info *info)
 		malloc_map(data, content, info, i);
 		fill_map_with_z(data);
 		check_map_error(data, info);
+		if (!data->Direction)
+		{
+			printf("no map\n");
+			exit(1);
+		}
 	}
 	
 	printf("##%s##\n", data->NO);
