@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/25 09:50:47 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/31 11:27:42 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ typedef struct s_data
 	char	*WE;
 	char	*EA;
 	char	**map;
+	char	Direction;
 	int		Floor[3];
 	int		sky[3];
 	int		MAX_LINE;
+	int		X;
+	int		Y;
 	
 }t_data;
 

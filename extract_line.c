@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/25 11:56:42 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/31 12:25:09 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int	lines_before_map(char *content)
 	i = 0;
 	while (content[i])
 	{
-		if (content[i] != '1' && content[i] != ' ')
+		if (content[i] != '1' && content[i] != ' ' && content[i] != '\t' 
+		&& content[i] != '*')
 			return (0);
 		i++;
 	}
@@ -221,18 +222,105 @@ void	tallest_line(char **content, int i, t_data *data)
 	}
 }
 
+void	malloc_map(t_data *data, char **content, t_info *info, int i)
+{
+	int	k;
+	int	z;
+
+	k = -1;
+	z = 0;
+	info->num_lines = info->num_lines - i;
+	data->map = malloc(sizeof(char *) * info->num_lines + 1);
+	while (++k < info->num_lines)
+		data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
+	k = -1;
+	while (++k < info->num_lines)
+	{
+		content[i] = ft_strtrim(content[i], "\n");
+		z = ft_strlcpy(data->map[k], content[i], data->MAX_LINE + 1);
+		while (z < data->MAX_LINE)
+		{
+			data->map[k][z] = '*';
+			if (z + 1 == data->MAX_LINE)
+				data->map[k][z + 1] = '\0'; 
+			z++;
+		}
+		i++;
+	}
+	data->map[k] = NULL;
+}
+
+void	fill_map_with_z(t_data *data)
+{
+	int s, k;
+	k = s = 0;
+	while (data->map[k])
+	{
+		s = 0;
+		while (data->map[k][s])
+		{
+			if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
+				data->map[k][s] = '*';
+			else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' 
+			|| data->map[k][s] == 'W' || data->map[k][s] == 'N')
+			{
+				data->Direction = data->map[k][s];
+				data->X = k;
+				data->Y = s;
+				data->map[k][s] = '0';
+			}
+			s++;
+		}
+		//printf("%s\n", data->map[k]);
+		k++;
+	}
+}
+
+int	check_up_down(t_data *data, int i, int j)
+{
+	if (data->map[i - 1][j] == '*' || data->map[i + 1][j] == '*')
+		return (0);
+	if (data->map[i][j - 1] == '*' || data->map[i][j + 1] == '*')
+		return (0);
+	else
+		return (1);
+}
+
+void	check_map_error(t_data *data, t_info *info)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (data->map[i])
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+			if (i + 1 == info->num_lines && !lines_before_map(data->map[i]))
+			{
+				printf("mapppp EEError\n");
+				exit(1);
+			}
+			if (data->map[i][j] == '0' && !check_up_down(data, i , j))
+			{
+				printf("mapppp Error\n");
+				exit(1);
+			}
+			j++;
+		}
+		i++;
+	}
+}
 void	extract_line(char **content, t_data *data, t_info *info)
 {
 	int	i;
 	int	j;
-	int	k;
-	int	z;
 	char *line;
 
 	i = -1;
 	j = 0;
-	k = 0;
-	while(content[++i])
+	while (content[++i])
 	{
 		line = ft_strtrim(content[i], "\t \n");
 		if (line[0] && lines_before_map(line))
@@ -244,47 +332,12 @@ void	extract_line(char **content, t_data *data, t_info *info)
 	else
 	{
 		// map...
-		//printf("i = %d    info = %d\n", i, info->num_lines);
 		tallest_line(content, i, data);
-		data->map = malloc(sizeof(char *) * info->num_lines - i + 1);
-		while (k < info->num_lines - i)
-		{
-			data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
-			k++;
-		}
-		k = 0;
-		int p = info->num_lines - i;
-		while (k < p)
-		{
-			content[i] = ft_strtrim(content[i], "\n");
-			z = ft_strlcpy(data->map[k], content[i], data->MAX_LINE + 1);
-			while (z < data->MAX_LINE)
-			{
-				data->map[k][z] = 'z';
-				if (z + 1 == data->MAX_LINE)
-					data->map[k][z + 1] = '\0'; 
-				z++;
-			}
-			//printf("%s\n", data->map[k]);
-			i++;
-			k++;
-		}
-		data->map[k] = NULL;
+		malloc_map(data, content, info, i);
+		fill_map_with_z(data);
+		check_map_error(data, info);
 	}
-	k = 0;
-	int s = 0;
-	while (data->map[k])
-	{
-		s = 0;
-		while (data->map[k][s])
-		{
-			if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
-				data->map[k][s] = 'z';
-			s++;
-		}
-		printf("%s\n", data->map[k]);
-		k++;
-	}
+	
 	// printf("##%s##\n", data->NO);
 	// printf("##%s##\n", data->SO);
 	// printf("##%s##\n", data->EA);
