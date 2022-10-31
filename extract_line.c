@@ -6,11 +6,18 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/31 15:47:52 by akadi            ###   ########.fr       */
+/*   Updated: 2022/10/31 18:50:56 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+int	is_space(char line)
+{
+	if ((line >= 9 && line <= 13) || line == ' ')
+		return (1);
+	return (0);
+}
 
 int	color_is_valid(char *color)
 {
@@ -20,6 +27,11 @@ int	color_is_valid(char *color)
 	i = 0;
 	while (color[i])
 	{
+		if (is_space(color[i]))
+		{
+			i++;
+			continue;
+		}
 		if (!ft_isdigit(color[i]))
 			return(0);
 		i++;
@@ -44,14 +56,6 @@ int	num_of_comma(char *line)
 	return (j);
 }
 
-
-int	is_space(char line)
-{
-	if ((line >= 9 && line <= 13) || line == ' ')
-		return (1);
-	return (0);
-}
-
 int		layerOneChecker(char *line)
 {
 	if ((line[0] == 'F' || line[0] == 'C') && (line[1] == ' ' || line[1] == '\t') && num_of_comma(line) == 2)
@@ -68,7 +72,7 @@ int		layerTwoChecker(char *line)
 		i++;
 	while (line[i])
 	{
-		if (!ft_isdigit(line[i]) && line[i] != ',')
+		if (!is_space(line[i]) && !ft_isdigit(line[i]) && line[i] != ',')
 			return (0);
 		i++;
 	}
@@ -123,7 +127,6 @@ int		layerThreeChecker(char *line, t_data *data)
 
 void	check_color_line(char *line, t_data *data)
 {
-	(void)data;
 	if (layerOneChecker(line) && layerTwoChecker(line) && layerThreeChecker(line, data))
 		return ;
 	else
