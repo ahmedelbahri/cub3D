@@ -6,13 +6,13 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:57:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/31 11:28:10 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:20:23 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	init_data(t_data *data)
+void	init_data(t_data *data, t_info *info)
 {
 	data->NO = NULL;
 	data->SO = NULL;
@@ -29,4 +29,5 @@ void	init_data(t_data *data)
 	data->sky[2] = -1;
 	data->X = -1;
 	data->Y = -1;
+	info->empty_lines = 0;
 }

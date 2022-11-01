@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 15:57:37 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/31 18:50:56 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/01 16:24:55 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,24 @@ int		layerTwoChecker(char *line)
 	return (1);
 }
 
-// void	fill_data(char *num, char *line, t_data *data)
-// {
-// 	(void)data;
-// 	(void)line;
-// 	if (line[0] == 'C')
-// 	{
-// 		data->Floor[]
-// 	}
-// }
+void	fill_color(char line, char *sub, t_data *data, int k)
+{
+	if (line == 'C')
+	{
+		data->sky[k] = ft_atoi(sub);
+		free(sub);
+	}
+	if (line == 'F')
+	{
+		data->Floor[k] = ft_atoi(sub);
+		free(sub);
+	}
+}
 
 int		layerThreeChecker(char *line, t_data *data)
 {
-	(void)data;
-	int j;
-	int i;
+	int			j;
+	int			i;
 	static int	k;
 
 	j = 0;
@@ -111,13 +114,7 @@ int		layerThreeChecker(char *line, t_data *data)
 			if (!color_is_valid(ft_substr(line, j, i - j)))
 				return (0);
 			else
-			{
-				if (line[0] == 'C')
-					data->sky[k++] = ft_atoi(ft_substr(line, j, i - j));
-				if (line[0] == 'F')
-					data->Floor[k++] = ft_atoi(ft_substr(line, j, i - j));
-				//printf("[%s]\n", ft_substr(line, j, i - j));
-			}
+				fill_color(line[0], ft_substr(line, j, i - j), data, k++);
 			j = i+1;
 		}
 		i++;
@@ -136,11 +133,28 @@ void	check_color_line(char *line, t_data *data)
 	}
 }
 
+void	condition_texture(t_data *data, char direction, char *line)
+{
+	if (data->SO == NULL && direction == 'S')
+		data->SO = ft_strdup(line);
+	else if (data->NO == NULL && direction == 'N')
+		data->NO = ft_strdup(line);
+	else if (data->EA == NULL && direction == 'E')
+		data->EA = ft_strdup(line);
+	else if (data->WE == NULL && direction == 'W')
+		data->WE = ft_strdup(line);
+	else
+	{
+		printf("Duplicate\n");
+		exit(1);
+	}
+}
+
 void	check_each_line(char *line, char *direction, t_data *data)
 {
 	int	i;
 	int	fd;
-	
+
 	i = -1;
 	if ((!ft_strncmp(line, direction, 3) || !ft_strncmp(&line[2], "\t", 1)) \
 	&& ft_strnstr(line, "./texture/", ft_strlen(line)))
@@ -153,20 +167,7 @@ void	check_each_line(char *line, char *direction, t_data *data)
 			exit(1);
 		}
 		close(fd);
-		// fill structure ...
-		if (data->SO == NULL && direction[0] == 'S')
-			data->SO = line;
-		else if (data->NO == NULL && direction[0] == 'N')
-			data->NO = line;
-		else if (data->EA == NULL && direction[0] == 'E')
-			data->EA = line;
-		else if (data->WE == NULL && direction[0] == 'W')
-			data->WE = line;
-		else
-		{
-			printf("Duplicate\n");
-			exit(1);
-		}
+		condition_texture(data, direction[0], line);
 	}
 	else
 	{
@@ -190,7 +191,7 @@ int	lines_before_map(char *content)
 	return (1);
 }
 
-void	check_line(char *line, t_data *data, int *j)
+void	check_line(char *line, t_data *data, t_info *info)
 {
 	if (line[0] && line[0] == 'N')
 		check_each_line(line, "NO ", data);
@@ -210,18 +211,22 @@ void	check_line(char *line, t_data *data, int *j)
 		exit(1) ;
 	}
 	else
-		*j+=1;
+		info->empty_lines+=1;
 }
 
 void	tallest_line(char **content, int i, t_data *data)
 {
+	int		len;
+	char	*trim;
+
 	while (content[i])
 	{
-		int len = ft_strlen(ft_strtrim(content[i], "\n"));
+		trim = ft_strtrim(content[i], "\n");
+		len = ft_strlen(trim);
 		if(data->MAX_LINE < len)
 			data->MAX_LINE = len;
-		//printf("max = %d	  %s",data->MAX_LINE, content[i]);
 		i++;
+		free(trim);
 	}
 }
 
@@ -229,9 +234,9 @@ void	malloc_map(t_data *data, char **content, t_info *info, int i)
 {
 	int	k;
 	int	z;
+	char	*trim;
 
 	k = -1;
-	z = 0;
 	info->num_lines = info->num_lines - i;
 	data->map = malloc(sizeof(char *) * info->num_lines + 1);
 	while (++k < info->num_lines)
@@ -239,16 +244,17 @@ void	malloc_map(t_data *data, char **content, t_info *info, int i)
 	k = -1;
 	while (++k < info->num_lines)
 	{
-		content[i] = ft_strtrim(content[i], "\n");
-		z = ft_strlcpy(data->map[k], content[i], data->MAX_LINE + 1);
+		trim = ft_strtrim(content[i], "\n");
+		z = ft_strlcpy(data->map[k], trim, data->MAX_LINE + 1);
 		while (z < data->MAX_LINE)
 		{
 			data->map[k][z] = '*';
 			if (z + 1 == data->MAX_LINE)
-				data->map[k][z + 1] = '\0'; 
+				data->map[k][z + 1] = '\0';
 			z++;
 		}
 		i++;
+		free(trim);
 	}
 	data->map[k] = NULL;
 }
@@ -333,22 +339,10 @@ void	check_map_error(t_data *data, t_info *info)
 		i++;
 	}
 }
-void	extract_line(char **content, t_data *data, t_info *info)
-{
-	int	i;
-	int	j;
-	char *line;
 
-	i = -1;
-	j = 0;
-	while (content[++i])
-	{
-		line = ft_strtrim(content[i], "\t \n");
-		if (line[0] && lines_before_map(line))
-			break ;
-		check_line(line, data, &j);
-	}
-	if (i - j -1 < 5)
+void	condition(char **content, int i, t_info *info, t_data *data)
+{
+	if (i - info->empty_lines -1 < 5)
 	{
 		printf("Missing / Error\n");
 		exit(1);
@@ -366,7 +360,26 @@ void	extract_line(char **content, t_data *data, t_info *info)
 			exit(1);
 		}
 	}
-	
+}
+
+void	extract_line(char **content, t_data *data, t_info *info)
+{
+	int	i;
+	char *line;
+
+	i = -1;
+	while (content[++i])
+	{
+		line = ft_strtrim(content[i], "\t \n");
+		if (line[0] && lines_before_map(line))
+		{
+			free(line);
+			break ;
+		}
+		check_line(line, data, info);
+		free(line);
+	}
+	condition(content, i, info, data);
 	printf("##%s##\n", data->NO);
 	printf("##%s##\n", data->SO);
 	printf("##%s##\n", data->EA);

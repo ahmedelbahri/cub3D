@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/10/24 16:57:55 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:20:33 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,19 @@ int	lines_of_file(char *av)
 {
 	int	fd;
 	int	i;
+	char *line;
 
 	i = 0;
 	fd = open(av, O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while(get_next_line(fd))
+	line = get_next_line(fd);
+	while(line)
+	{
+		free(line);
+		line = get_next_line(fd);
 		i++;
+	}
 	close(fd);
 	return (i);
 }
@@ -69,7 +75,7 @@ int main(int ac, char **av)
 	content = read_map(av[1], &info);
 	if (!content)
 		return (printf("ERROR Argumenttt"), -1);
-	init_data(&data);
+	init_data(&data, &info);
 	extract_line(content, &data, &info);
 	// int i = -1;
 	// while(++i < 105)
