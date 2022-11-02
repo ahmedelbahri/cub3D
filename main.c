@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/01 15:20:33 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/02 10:18:24 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,17 @@ int main(int ac, char **av)
 		return (printf("ERROR Argumenttt"), -1);
 	init_data(&data, &info);
 	extract_line(content, &data, &info);
-	// int i = -1;
-	// while(++i < 105)
-	// 	printf("%s", content[i]);
+	printf("##%s##\n", data.NO);
+	printf("##%s##\n", data.SO);
+	printf("##%s##\n", data.EA);
+	printf("##%s##\n", data.WE);
+	printf("##%d##\n", data.Floor[0]);
+	printf("##%d##\n", data.Floor[1]);
+	printf("##%d##\n", data.Floor[2]);
+	printf("##%d##\n", data.sky[0]);
+	printf("##%d##\n", data.sky[1]);
+	printf("##%d##\n", data.sky[2]);
+	printf("##%c##\n", data.Direction);
+	printf("##%d##\n", data.X);
+	printf("##%d##\n", data.Y);
 }
