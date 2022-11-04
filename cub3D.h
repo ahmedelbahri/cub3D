@@ -6,18 +6,20 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/02 12:25:07 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/03 18:54:58 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <mlx.h>
 #include "libft/libft.h"
 
 #define BUFFER_SIZE 1000000000
@@ -37,7 +39,16 @@ typedef struct s_data
 	int		Y;
 	
 }t_data;
-
+typedef struct s_mlx
+{
+	void	*img;
+	void	*window;
+	void	*mlx;
+	int		start_x;
+	int		end_x;
+	int		start_y;
+	int		end_y;
+}t_mlx;
 typedef struct s_info
 {
 	int	num_lines;
