@@ -6,13 +6,13 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:52:35 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/02 16:11:57 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/06 17:48:47 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	check_map_error(t_data *data, t_info *info)
+void	check_map_error(t_data *data)
 {
 	int	i;
 	int	j;
@@ -23,7 +23,7 @@ void	check_map_error(t_data *data, t_info *info)
 		j = 0;
 		while (data->map[i][j])
 		{
-			if (i + 1 == info->num_lines && !lines_before_map(data->map[i]))
+			if (i + 1 == data->num_lines && !lines_before_map(data->map[i]))
 			{
 				printf("mapppp EEError\n");
 				exit(1);
@@ -49,19 +49,19 @@ int	check_up_down(t_data *data, int i, int j)
 		return (1);
 }
 
-void	malloc_map(t_data *data, char **content, t_info *info, int i)
+void	malloc_map(t_data *data, char **content, int i)
 {
 	int	k;
 	int	z;
 	char	*trim;
 
 	k = -1;
-	info->num_lines = info->num_lines - i;
-	data->map = malloc(sizeof(char *) * info->num_lines + 1);
-	while (++k < info->num_lines)
+	data->num_lines = data->num_lines - i;
+	data->map = malloc(sizeof(char *) * data->num_lines + 1);
+	while (++k < data->num_lines)
 		data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
 	k = -1;
-	while (++k < info->num_lines)
+	while (++k < data->num_lines)
 	{
 		trim = ft_strtrim(content[i], "\n");
 		z = ft_strlcpy(data->map[k], trim, data->MAX_LINE + 1);
@@ -94,9 +94,9 @@ void	tallest_line(char **content, int i, t_data *data)
 	}
 }
 
-void	condition(char **content, int i, t_info *info, t_data *data)
+void	condition(char **content, int i, t_data *data)
 {
-	if (i - info->empty_lines -1 < 5)
+	if (i - data->empty_lines -1 < 5)
 	{
 		printf("Missing / Error\n");
 		exit(1);
@@ -105,9 +105,9 @@ void	condition(char **content, int i, t_info *info, t_data *data)
 	{
 		// map...
 		tallest_line(content, i, data);
-		malloc_map(data, content, info, i);
+		malloc_map(data, content, i);
 		fill_map_with_z(data);
-		check_map_error(data, info);
+		check_map_error(data);
 		if (!data->Direction)
 		{
 			

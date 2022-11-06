@@ -6,7 +6,7 @@
 		<string>English</string>
 		<key>CFBundleIdentifier</key>
 		<string>com.apple.xcode.dsym.a.out</string>
-		<key>CFBundleInfoDictionaryVersion</key>
+		<key>CFBundledataDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundlePackageType</key>
 		<string>dSYM</string>

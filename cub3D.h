@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/03 18:54:58 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/06 17:45:33 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 #include "libft/libft.h"
 
 #define BUFFER_SIZE 1000000000
+#define H 900
+#define W 1300
+#define SQ 8
 
 typedef struct s_data
 {
@@ -37,29 +40,42 @@ typedef struct s_data
 	int		MAX_LINE;
 	int		X;
 	int		Y;
-	
-}t_data;
-typedef struct s_mlx
-{
 	void	*img;
 	void	*window;
 	void	*mlx;
-	int		start_x;
-	int		end_x;
-	int		start_y;
-	int		end_y;
-}t_mlx;
-typedef struct s_info
-{
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		color;
+	int		x;
+	int		y;
 	int	num_lines;
 	int	empty_lines;
-}t_info;
+}t_data;
+// typedef struct s_mlx
+// {
+// 	void	*img;
+// 	void	*window;
+// 	void	*mlx;
+// 	char	*addr;
+// 	int		bits_per_pixel;
+// 	int		line_length;
+// 	int		endian;
+// 	int		color;
+// 	int		x;
+// 	int		y;
+// }t_data;
+// typedef struct s_data
+// {
+	
+// }t_data;
 
 //extract_line
-void	extract_line(char **content, t_data *data, t_info *info);
+void	extract_line(char **content, t_data *data);
 void	check_color_line(char *line, t_data *data);
 void	check_each_line(char *line, char *direction, t_data *data);
-void	check_line(char *line, t_data *data, t_info *info);
+void	check_line(char *line, t_data *data);
 int		lines_before_map(char *content);
 //fill_data
 void	fill_map_with_z(t_data *data);
@@ -71,17 +87,21 @@ int		layerOneChecker(char *line);
 int		layerTwoChecker(char *line);
 int		layerThreeChecker(char *line, t_data *data);
 //map_handling
-void	check_map_error(t_data *data, t_info *info);
+void	check_map_error(t_data *data);
 int		check_up_down(t_data *data, int i, int j);
-void	malloc_map(t_data *data, char **content, t_info *info, int i);
+void	malloc_map(t_data *data, char **content, int i);
 void	tallest_line(char **content, int i, t_data *data);
-void	condition(char **content, int i, t_info *info, t_data *data);
+void	condition(char **content, int i, t_data *data);
 //utils
 int		is_space(char line);
 int		color_is_valid(char *color);
 int		num_of_comma(char *line);
 //init_data
-void	init_data(t_data *data, t_info *info);
+void	init_data(t_data *data);
 //get_next_line
 char	*get_next_line(int fd);
+//draw_2d
+void	draw_2d(t_data *data);
+//keys
+int	keys(int key, t_data *data);
 #endif

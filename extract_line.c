@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:46:12 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/02 11:48:39 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/06 17:46:21 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	check_each_line(char *line, char *direction, t_data *data)
 	}
 }
 
-void	check_line(char *line, t_data *data, t_info *info)
+void	check_line(char *line, t_data *data)
 {
 	if (line[0] && line[0] == 'N')
 		check_each_line(line, "NO ", data);
@@ -70,7 +70,7 @@ void	check_line(char *line, t_data *data, t_info *info)
 		exit(1) ;
 	}
 	else
-		info->empty_lines+=1;
+		data->empty_lines+=1;
 }
 
 int	lines_before_map(char *content)
@@ -88,7 +88,7 @@ int	lines_before_map(char *content)
 	return (1);
 }
 
-void	extract_line(char **content, t_data *data, t_info *info)
+void	extract_line(char **content, t_data *data)
 {
 	int	i;
 	char *line;
@@ -102,8 +102,8 @@ void	extract_line(char **content, t_data *data, t_info *info)
 			free(line);
 			break ;
 		}
-		check_line(line, data, info);
+		check_line(line, data);
 		free(line);
 	}
-	condition(content, i, info, data);
+	condition(content, i, data);
 }
