@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:57:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:46:57 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/07 14:15:59 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_data(t_data *data)
 	data->sky[0] = -1;
 	data->sky[1] = -1;
 	data->sky[2] = -1;
-	data->X = -1;
-	data->Y = -1;
+	data->X_player = -1;
+	data->Y_player = -1;
 	data->empty_lines = 0;
 }

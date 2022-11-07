@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:45:33 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/07 19:57:10 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #define H 900
 #define W 1300
 #define SQ 8
+#define PI 3.142857
 
 typedef struct s_data
 {
@@ -38,8 +39,8 @@ typedef struct s_data
 	int		Floor[3];
 	int		sky[3];
 	int		MAX_LINE;
-	int		X;
-	int		Y;
+	int		X_player;
+	int		Y_player;
 	void	*img;
 	void	*window;
 	void	*mlx;
@@ -48,8 +49,6 @@ typedef struct s_data
 	int		line_length;
 	int		endian;
 	int		color;
-	int		x;
-	int		y;
 	int	num_lines;
 	int	empty_lines;
 }t_data;

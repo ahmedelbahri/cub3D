@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 19:00:48 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/07 14:15:42 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@ int	keys(int key,t_data *data)
 {
 	if (key == 1)
 	{
-		if (data->map[data->X + 1][data->Y] != '1')
-			data->X += 1;
+		if (data->map[data->X_player + 1][data->Y_player] != '1')
+			data->X_player += 1;
 	}
 	if (key == 13)
 	{
-		if (data->map[data->X - 1][data->Y] != '1')
-			data->X -= 1;
+		if (data->map[data->X_player - 1][data->Y_player] != '1')
+			data->X_player -= 1;
 	}
 	if (key == 2)
 	{
-		if (data->map[data->X][data->Y + 1] != '1')
-			data->Y += 1;
+		if (data->map[data->X_player][data->Y_player + 1] != '1')
+			data->Y_player += 1;
 	}
 	if (key == 0)
 	{
-		if (data->map[data->X][data->Y - 1] != '1')
-			data->Y -= 1;
+		if (data->map[data->X_player][data->Y_player - 1] != '1')
+			data->Y_player -= 1;
 	}
 	more_keys(key);
 	mlx_destroy_image(data->mlx, data->img);

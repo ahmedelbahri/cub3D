@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:54:48 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/07 20:01:20 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,38 @@ void	color(t_data *data, int x, int y)
 		data->color = 0xff0000;
 	if (data->map[y][x] == '*')
 		data->color = 0x000000;
-	if (data->X == y && data->Y == x)
+	if (data->X_player == y && data->Y_player == x)
 		data->color = 0x0000ff;
+}
+
+void	dda(t_data *data, int x0, int y0,int x1, int y1)
+{
+	int dx,dy, step, i;
+	float Xi, Yi, x, y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+	step = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+	Xi = dx/step;
+	Yi = dy/step;
+	x = x0;
+	y = y0;
+	i = -1;
+	while (++i <= step)
+	{
+		my_mlx_pixel_put(data, x, y);
+		x += Xi;
+		y += Yi;
+	}
 }
 
 void	rectangle(int x, int y, t_data *data)
 {
 	int i = x * SQ,j;
-	while (i < (x + 1) *SQ)
+	while (i < (x + 1) * SQ)
 	{
 		j = y * SQ;
-		while (j < (y +1) * SQ)
+		while (j < (y + 1) * SQ)
 		{
 			my_mlx_pixel_put(data, i, j);
 			j++;
@@ -63,7 +84,13 @@ void	rectangle(int x, int y, t_data *data)
 void	draw_2d(t_data *data)
 {
 	int x,y = 0;
+	int x_of_player;
+	int y_of_player;
+	int point_x;
+	//int point_y;
+	
 	image(data);
+	
 	while (y < data->num_lines)
 	{
 		x = 0;
@@ -71,9 +98,19 @@ void	draw_2d(t_data *data)
 		{
 			color(data, x, y);
 			rectangle(x, y, data);
+			if (data->X_player == y && data->Y_player == x)
+			{
+				printf("hey\n");
+				x_of_player = x;
+				y_of_player = y;
+			}
 			x++;
 		}
 		y++;
 	}
+	point_x = ( x_of_player * SQ + (( ((x_of_player + 1) * SQ) - (x_of_player * SQ) )/2) );
+	data->color = 0xff00ff;
+	dda(data, point_x, y_of_player * (SQ) + SQ/2, point_x,(y  + 1) * SQ/2);
+	data->color = 0xff00ff;
 	mlx_put_image_to_window(data->mlx, data->window, data->img, 0, 0);
 }
