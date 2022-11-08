@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/07 20:01:20 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/08 15:39:43 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,49 @@ void	color(t_data *data, int x, int y)
 		data->color = 0x0000ff;
 }
 
-void	dda(t_data *data, int x0, int y0,int x1, int y1)
-{
-	int dx,dy, step, i;
-	float Xi, Yi, x, y;
+// void	dda(t_data *data, int x0, int y0,int x1, int y1)
+// {
+// 	int dx,dy, step, i;
+// 	float Xi, Yi, x, y;
 
-	dx = x1 - x0;
-	dy = y1 - y0;
-	step = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
-	Xi = dx/step;
-	Yi = dy/step;
-	x = x0;
-	y = y0;
-	i = -1;
-	while (++i <= step)
+// 	dx = x1 - x0;
+// 	dy = y1 - y0;
+// 	step = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+// 	Xi = dx/step;
+// 	Yi = dy/step;
+// 	x = x0;
+// 	y = y0;
+// 	i = -1;
+// 	while (++i <= step)
+// 	{
+// 		my_mlx_pixel_put(data, x, y);
+// 		x += Xi;
+// 		y += Yi;
+// 	}
+// }
+float	max(float a, float b)
+{
+	if (a > b)
+		return (a);
+	return (b);
+}
+
+void	dda(t_data *data, int x, int y, int x1, int y1)
+{
+	float	step_x;
+	float	step_y;
+	float	max_v;
+
+	step_x = x1 - x;
+	step_y = y1 - y;
+	max_v = max(abs((int)step_x), abs((int)step_y));
+	step_x /= max_v;
+	step_y /= max_v;
+	while ((int)(x - x1) || (int)(y - y1))
 	{
 		my_mlx_pixel_put(data, x, y);
-		x += Xi;
-		y += Yi;
+		x += step_x;
+		y += step_y;
 	}
 }
 
@@ -87,7 +112,7 @@ void	draw_2d(t_data *data)
 	int x_of_player;
 	int y_of_player;
 	int point_x;
-	//int point_y;
+	int point_y;
 	
 	image(data);
 	
@@ -100,7 +125,6 @@ void	draw_2d(t_data *data)
 			rectangle(x, y, data);
 			if (data->X_player == y && data->Y_player == x)
 			{
-				printf("hey\n");
 				x_of_player = x;
 				y_of_player = y;
 			}
@@ -109,8 +133,15 @@ void	draw_2d(t_data *data)
 		y++;
 	}
 	point_x = ( x_of_player * SQ + (( ((x_of_player + 1) * SQ) - (x_of_player * SQ) )/2) );
+	point_y = ( y_of_player * SQ + (( ((y_of_player + 1) * SQ) - (y_of_player * SQ) )/2) );
 	data->color = 0xff00ff;
-	dda(data, point_x, y_of_player * (SQ) + SQ/2, point_x,(y  + 1) * SQ/2);
-	data->color = 0xff00ff;
+	dda(data, (x_of_player) * (SQ) - (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
+
+
+
+
+	//dda(data, (x_of_player) * (SQ) + (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
+	//dda(data, point_x , y_of_player * (SQ) + SQ/2, point_x,(y_of_player) * (SQ) + (SQ * 5) );
+	//dda(data, point_x, y_of_player * (SQ) + SQ/2 * sin(PI/2), point_x,(y_of_player) * (SQ) + (SQ * 5) * cos(0));
 	mlx_put_image_to_window(data->mlx, data->window, data->img, 0, 0);
 }

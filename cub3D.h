@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/07 19:57:10 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/08 13:20:06 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #define BUFFER_SIZE 1000000000
 #define H 900
 #define W 1300
-#define SQ 8
+#define SQ 30
 #define PI 3.142857
 
 typedef struct s_data
