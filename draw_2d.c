@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/08 15:39:43 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/09 19:43:15 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	color(t_data *data, int x, int y)
 		data->color = 0xff0000;
 	if (data->map[y][x] == '*')
 		data->color = 0x000000;
-	if (data->X_player == y && data->Y_player == x)
-		data->color = 0x0000ff;
+	// if (data->X_player == y && data->Y_player == x)
+	// 	data->color = 0x0000ff;
 }
 
 // void	dda(t_data *data, int x0, int y0,int x1, int y1)
@@ -105,7 +105,37 @@ void	rectangle(int x, int y, t_data *data)
 		i++;
 	}
 }
-
+void	draw_circle(float Xc, float Yc, float x, float y, t_data *data)
+{
+	data->color = 0x0000ff;
+	my_mlx_pixel_put(data,Xc+x, Yc+y);
+    my_mlx_pixel_put(data,Xc-x, Yc+y);
+    my_mlx_pixel_put(data,Xc+x, Yc-y);
+    my_mlx_pixel_put(data,Xc-x, Yc-y);
+    my_mlx_pixel_put(data,Xc+y, Yc+x);
+    my_mlx_pixel_put(data,Xc-y, Yc+x);
+    my_mlx_pixel_put(data,Xc+y, Yc-x);
+    my_mlx_pixel_put(data,Xc-y, Yc-x);
+}
+void	cercle(float Xc, float Yc, float r, t_data *data)
+{
+	float x = 0;
+	float y = r;
+	float d = 3 - 2* r;
+	draw_circle(Xc, Yc, x, y, data);
+	while (y >= x)
+   	{
+        x++;
+       	if (d > 0)
+        {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        }
+        else
+           	d = d + 4 * x + 6;
+        draw_circle(Xc, Yc, x, y, data);
+    }
+}
 void	draw_2d(t_data *data)
 {
 	int x,y = 0;
@@ -132,10 +162,15 @@ void	draw_2d(t_data *data)
 		}
 		y++;
 	}
+	data->color = 0x0000ff;
+	printf("Y_pla = %d   X_pla %d  position_x = %f  position_y = %f\n",data->Y_player,data->X_player,data->pixel_x,data->pixel_y);
+	float r = 5;
+	while (r >= 0)
+		cercle((data->Y_player + data->pixel_x) * SQ + SQ/2, (data->X_player + data->pixel_y) * SQ + SQ/2, r--, data);
 	point_x = ( x_of_player * SQ + (( ((x_of_player + 1) * SQ) - (x_of_player * SQ) )/2) );
 	point_y = ( y_of_player * SQ + (( ((y_of_player + 1) * SQ) - (y_of_player * SQ) )/2) );
-	data->color = 0xff00ff;
-	dda(data, (x_of_player) * (SQ) - (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
+	//data->color = 0xff00ff;
+	//dda(data, (x_of_player) * (SQ) - (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
 
 
 

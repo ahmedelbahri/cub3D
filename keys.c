@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/08 15:54:21 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/09 19:41:32 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,25 @@ void	more_keys(int key)
 
 int	keys(int key,t_data *data)
 {
-	if (key == 1)
+	if (key == 1) // keyword 'S'
 	{
-		if (data->map[data->X_player + 1][data->Y_player] != '1')
-			data->X_player += 1;
+		//if (data->map[data->X_player + 1][data->Y_player] != '1')
+			data->pixel_y += 0.1;
 	}
-	if (key == 13)
+	if (key == 13) // keyword 'W'
 	{
-		if (data->map[data->X_player - 1][data->Y_player] != '1')
-			data->X_player -= 1;
+		//if (data->map[data->X_player - 1][data->Y_player] != '1')
+			data->pixel_y -= 0.1;
 	}
-	if (key == 2)
+	if (key == 2) // keyword 'D'
 	{
-		if (data->map[data->X_player][data->Y_player + 1] != '1')
-			data->Y_player += 1;
+		//if (data->map[data->X_player][data->Y_player + 1] != '1')
+			data->pixel_x += 0.1;
 	}
-	if (key == 0)
+	if (key == 0) //keyword 'A'
 	{
-		if (data->map[data->X_player][data->Y_player - 1] != '1')
-			data->Y_player -= 1;
+		//if (data->map[data->X_player][data->Y_player - 1] != '1')
+			data->pixel_x -= 0.1;
 	}
 	more_keys(key);
 	mlx_destroy_image(data->mlx, data->img);
