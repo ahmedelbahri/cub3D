@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:47:32 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/09 12:21:09 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,45 +27,62 @@ int	check_argument_error(int ac, char **av)
 	return (0);
 }
 
-int	lines_of_file(char *av)
+int	dubstrlen(char **content)
 {
-	int	fd;
-	int	i;
-	char *line;
-
+	int i;
 	i = 0;
-	fd = open(av, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	line = get_next_line(fd);
-	while(line)
-	{
-		free(line);
-		line = get_next_line(fd);
+	while (content[i] != NULL)
 		i++;
-	}
-	close(fd);
 	return (i);
 }
 
-char **read_map(char *av, t_data *data)
+char	*ft_strjoin_read(char *s1, char *s2)
+{
+	char	*p;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!s1)
+		return (NULL);
+	p = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (p == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	while (s2[j] != '\0')
+	{
+		p[i] = s2[j];
+		i++;
+		j++;
+	}
+	p[i] = '\0';
+	return (free(s1), free(s2), p);
+}
+
+char **read_map(char *av)
 {
 	char	**content;
+	char	*buffer;
+	char	*save;
 	int 	fd;
-	int		j;
-	
-	j = 0;
-	data->num_lines = lines_of_file(av);
-	content = malloc(sizeof(char *) * data->num_lines + 1);
-	if (!content)
-		return (printf("Malloc Error"), NULL);
+
 	fd = open(av, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	j = -1;
-	while(++j < data->num_lines)
-		content[j] = get_next_line(fd);
-	content[j] = NULL;
+	save = ft_strdup("");
+	buffer = get_next_line(fd);
+	while (buffer)
+	{
+		save = ft_strjoin_read(save, buffer);
+		buffer = get_next_line(fd);
+	}
+	content = ft_split(save, '\n');
+	free(save);
 	close(fd);
 	return (content);
 }
@@ -74,21 +91,22 @@ int main(int ac, char **av)
 {
 	char	**content;
 	t_data	data;
-	//t_data	data;
 
 	data.mlx = mlx_init();
 	if (check_argument_error(ac, av) == -1)
 		return (printf("ERROR Argument"), -1);
-	content = read_map(av[1], &data);
+	content = read_map(av[1]);
 	if (!content)
 		return (printf("ERROR Argumenttt"), -1);
+	data.num_lines = dubstrlen(content);
 	init_data(&data);
 	extract_line(content, &data);
 	data.window = mlx_new_window(data.mlx, 1300, 900, "cub3D");
 	draw_2d(&data);
 	mlx_hook(data.window, 2, 0L, keys, &data);
-	mlx_hook(data.window, 17, 1L << 0, quit, NULL);
+	mlx_hook(data.window, 17, 0, quit, NULL);
 	mlx_loop(data.mlx);
+	return (0);
 }
 
 
