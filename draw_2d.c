@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/09 19:43:15 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/11 14:00:49 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,10 @@ void	cercle(float Xc, float Yc, float r, t_data *data)
 void	draw_2d(t_data *data)
 {
 	int x,y = 0;
-	int x_of_player;
-	int y_of_player;
-	int point_x;
-	int point_y;
+	// int x_of_player;
+	// int y_of_player;
+	// int point_x;
+	// int point_y;
 	
 	image(data);
 	
@@ -153,28 +153,26 @@ void	draw_2d(t_data *data)
 		{
 			color(data, x, y);
 			rectangle(x, y, data);
-			if (data->X_player == y && data->Y_player == x)
-			{
-				x_of_player = x;
-				y_of_player = y;
-			}
+			// if (data->X_player == y && data->Y_player == x)
+			// {
+			// 	x_of_player = x;
+			// 	y_of_player = y;
+			// }
 			x++;
 		}
 		y++;
 	}
 	data->color = 0x0000ff;
-	printf("Y_pla = %d   X_pla %d  position_x = %f  position_y = %f\n",data->Y_player,data->X_player,data->pixel_x,data->pixel_y);
-	float r = 5;
-	while (r >= 0)
-		cercle((data->Y_player + data->pixel_x) * SQ + SQ/2, (data->X_player + data->pixel_y) * SQ + SQ/2, r--, data);
-	point_x = ( x_of_player * SQ + (( ((x_of_player + 1) * SQ) - (x_of_player * SQ) )/2) );
-	point_y = ( y_of_player * SQ + (( ((y_of_player + 1) * SQ) - (y_of_player * SQ) )/2) );
-	//data->color = 0xff00ff;
-	//dda(data, (x_of_player) * (SQ) - (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
-
-
-
-
+	printf("X_pla = %d   Y_pla %d  position_x = %f  position_y = %f\n",data->X_player,data->Y_player,data->pixel_x,data->pixel_y);
+	// float r = 5;
+	// while (r >= 0)
+	if (data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)] != '1')
+		my_mlx_pixel_put(data, (data->X_player + data->pixel_x) * SQ + SQ / 2, (data->Y_player + data->pixel_y) * SQ + SQ / 2);
+	printf("%c\n", data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)]);
+	// point_x = ( data->X_player * SQ + (( ((data->X_player + 1) * SQ) - (data->X_player * SQ) )/2) );
+	// point_y = ( data->Y_player * SQ + (( ((data->Y_player + 1) * SQ) - (data->Y_player * SQ) )/2) );
+	// data->color = 0xff00ff;
+	// dda(data, (data->Y_player) * (SQ) - (SQ * 5) , point_y, data->X_player * (SQ) + SQ/2,point_y);
 	//dda(data, (x_of_player) * (SQ) + (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
 	//dda(data, point_x , y_of_player * (SQ) + SQ/2, point_x,(y_of_player) * (SQ) + (SQ * 5) );
 	//dda(data, point_x, y_of_player * (SQ) + SQ/2 * sin(PI/2), point_x,(y_of_player) * (SQ) + (SQ * 5) * cos(0));

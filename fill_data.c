@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:00:06 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/07 14:16:07 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/10 16:32:38 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	fill_direction(t_data *data, int k, int s)
 			exit(1);
 		}
 		data->Direction = data->map[k][s];
-		data->X_player = k;
-		data->Y_player = s;
+		data->X_player = s;
+		data->Y_player = k;
 		data->map[k][s] = '0';
 	}
 	else if (data->map[k][s] != '0' && data->map[k][s] != '1' 

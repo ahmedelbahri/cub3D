@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/09 12:21:09 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/11 13:55:08 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int main(int ac, char **av)
 	extract_line(content, &data);
 	data.window = mlx_new_window(data.mlx, 1300, 900, "cub3D");
 	draw_2d(&data);
-	mlx_hook(data.window, 2, 0L, keys, &data);
+	mlx_hook(data.window, 2, 0, keys, &data);
 	mlx_hook(data.window, 17, 0, quit, NULL);
 	mlx_loop(data.mlx);
 	return (0);
