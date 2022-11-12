@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/11 13:55:08 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:47:06 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,14 @@ int main(int ac, char **av)
 	init_data(&data);
 	extract_line(content, &data);
 	data.window = mlx_new_window(data.mlx, 1300, 900, "cub3D");
+	if (data.Direction == 'N')
+		data.angle = PI/2;
+	if (data.Direction == 'E')
+		data.angle = 0;
+	if (data.Direction == 'W')
+		data.angle = PI;
+	if (data.Direction == 'S')
+		data.angle = 3 * PI/2;
 	draw_2d(&data);
 	mlx_hook(data.window, 2, 0, keys, &data);
 	mlx_hook(data.window, 17, 0, quit, NULL);

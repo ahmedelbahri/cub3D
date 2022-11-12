@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/11 14:00:49 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/12 16:59:36 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,22 @@ void	color(t_data *data, int x, int y)
 {
 	if (data->map[y][x] == '0')
 		data->color = 0xffffff;
-	if (data->map[y][x] == '1')
+	else if (data->map[y][x] == '1')
 		data->color = 0xff0000;
-	if (data->map[y][x] == '*')
+	else if (data->map[y][x] == '*')
 		data->color = 0x000000;
 	// if (data->X_player == y && data->Y_player == x)
 	// 	data->color = 0x0000ff;
 }
 
-// void	dda(t_data *data, int x0, int y0,int x1, int y1)
+// void	dda(t_data *data, float x0, float y0,float x1, float y1)
 // {
-// 	int dx,dy, step, i;
+// 	float dx,dy, step, i;
 // 	float Xi, Yi, x, y;
 
 // 	dx = x1 - x0;
 // 	dy = y1 - y0;
-// 	step = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+// 	step = fabs(dx) > fabs(dy) ? fabs(dx) : fabs(dy);
 // 	Xi = dx/step;
 // 	Yi = dy/step;
 // 	x = x0;
@@ -72,22 +72,24 @@ float	max(float a, float b)
 	return (b);
 }
 
-void	dda(t_data *data, int x, int y, int x1, int y1)
+void	dda(t_data *data, float x, float y, float x1, float y1)
 {
 	float	step_x;
 	float	step_y;
 	float	max_v;
+	int i = 0;  
 
 	step_x = x1 - x;
 	step_y = y1 - y;
-	max_v = max(abs((int)step_x), abs((int)step_y));
+	max_v = max(fabs(step_x), fabs(step_y));
 	step_x /= max_v;
 	step_y /= max_v;
-	while ((int)(x - x1) || (int)(y - y1))
+	while (i <= max_v)
 	{
 		my_mlx_pixel_put(data, x, y);
 		x += step_x;
 		y += step_y;
+		i++;
 	}
 }
 
@@ -136,13 +138,51 @@ void	cercle(float Xc, float Yc, float r, t_data *data)
         draw_circle(Xc, Yc, x, y, data);
     }
 }
+
+typedef struct s_point
+{
+	double x;
+	double y;
+	/* data */
+} t_point;
+
+
+void	put_line(t_data *cub, t_point player, t_point end)
+{
+	t_point	var;
+	float	dx;
+	float	dy;
+	float	steps;
+	int		i;
+
+	// displacement(cub, &player.x, 'x');
+	// displacement(cub, &player.y, 'y');
+	// displacement(cub, &end.x, 'x');
+	// displacement(cub, &end.y, 'y');
+	dx = (float)(end.x - player.x);
+	dy = (float)(end.y - player.y);
+	steps = fmax(fabs(dy), fabs(dx));
+	dx = dx / steps;
+	dy = dy / steps;
+	var.x = player.x;
+	var.y = player.y;
+	i = 1;
+	while (i <= steps)
+	{
+		my_mlx_pixel_put(cub, round(var.x), round(var.y));
+		var.x += dx;
+		var.y += dy;
+		i++;
+	}
+}
+
 void	draw_2d(t_data *data)
 {
 	int x,y = 0;
 	// int x_of_player;
 	// int y_of_player;
-	// int point_x;
-	// int point_y;
+	int point_x;
+	int point_y;
 	
 	image(data);
 	
@@ -163,16 +203,18 @@ void	draw_2d(t_data *data)
 		y++;
 	}
 	data->color = 0x0000ff;
-	printf("X_pla = %d   Y_pla %d  position_x = %f  position_y = %f\n",data->X_player,data->Y_player,data->pixel_x,data->pixel_y);
+	printf("X_pla = %d   Y_pla %d  position_x = %f  position_y = %f   angle = %f\n",data->X_player,data->Y_player,data->pixel_x,data->pixel_y, data->angle);
 	// float r = 5;
 	// while (r >= 0)
-	if (data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)] != '1')
+	// if (data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)] != '1')
 		my_mlx_pixel_put(data, (data->X_player + data->pixel_x) * SQ + SQ / 2, (data->Y_player + data->pixel_y) * SQ + SQ / 2);
 	printf("%c\n", data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)]);
-	// point_x = ( data->X_player * SQ + (( ((data->X_player + 1) * SQ) - (data->X_player * SQ) )/2) );
-	// point_y = ( data->Y_player * SQ + (( ((data->Y_player + 1) * SQ) - (data->Y_player * SQ) )/2) );
-	// data->color = 0xff00ff;
-	// dda(data, (data->Y_player) * (SQ) - (SQ * 5) , point_y, data->X_player * (SQ) + SQ/2,point_y);
+	point_x = ((data->X_player + data->pixel_x) * SQ + (( (((data->X_player + 1 + data->pixel_x)) * SQ) - ((data->X_player + data->pixel_x) * SQ) )/2));
+	point_y = ((data->Y_player + data->pixel_y) * SQ + (( (((data->Y_player + 1 + data->pixel_y)) * SQ) - ((data->Y_player + data->pixel_y) * SQ) )/2));
+	data->color = 0xff00ff;
+	dda(data, ((data->X_player + data->pixel_x) * SQ) + SQ/2, ((data->Y_player + data->pixel_y) * SQ) + SQ/2, \
+	((data->X_player+ data->pixel_x) * SQ) + SQ/2 + cos(data->angle) * 20, ((data->Y_player+ data->pixel_y) * SQ) + SQ/2 + sin(data->angle) * 20);
+	//dda(data, (data->X_player * SQ) + SQ/2 + (data->pixel_x * SQ), point_y, data->Y_player * (SQ*12) + (data->pixel_x * SQ),point_y);
 	//dda(data, (x_of_player) * (SQ) + (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
 	//dda(data, point_x , y_of_player * (SQ) + SQ/2, point_x,(y_of_player) * (SQ) + (SQ * 5) );
 	//dda(data, point_x, y_of_player * (SQ) + SQ/2 * sin(PI/2), point_x,(y_of_player) * (SQ) + (SQ * 5) * cos(0));

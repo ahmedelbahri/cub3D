@@ -3,17 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/11 13:51:57 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/12 14:39:53 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	more_keys(int key)
+void	more_keys(int key, t_data *data)
 {
+	if (key == 123)
+		data->angle -= 0.1;
+	if (key == 124)
+		data->angle += 0.1;
 	if (key == 53)
 		exit(0);
 	return ;
@@ -49,7 +53,7 @@ int	keys(int key,t_data *data)
 		//if (data->map[data->X_player][data->Y_player - 1] != '1')
 			data->pixel_x -= 0.1;
 	}
-	more_keys(key);
+	more_keys(key, data);
 	mlx_destroy_image(data->mlx, data->img);
 	draw_2d(data);
 	return (0);

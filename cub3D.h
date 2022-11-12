@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/09 19:41:51 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/12 16:55:16 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ typedef struct s_data
 	int		line_length;
 	int		endian;
 	int		color;
-	int	num_lines;
-	int	empty_lines;
-	float pixel_x;
-	float pixel_y;
+	int		num_lines;
+	int		empty_lines;
+	float	pixel_x;
+	float	pixel_y;
+	float	angle;
 }t_data;
 // typedef struct s_mlx
 // {
