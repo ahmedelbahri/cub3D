@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/12 15:47:06 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/17 16:36:12 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,24 @@ char **read_map(char *av)
 	return (content);
 }
 
+int	key_rel(int key, t_data *data)
+{
+	if (key == 13)
+		data->w_pressed = 0;
+	if (key == 0)
+		data->a_pressed = 0;
+	if (key == 1)
+		data->s_pressed = 0;
+	if (key == 2)
+		data->d_pressed = 0;
+	if (key == 124)
+		data->rarr_pressed = 0;
+	if (key == 123)
+		data->larr_pressed = 0;
+	printf("w %d s %d rarr %d larr %d\n", data->w_pressed, data->s_pressed, data->rarr_pressed, data->larr_pressed);
+	return (0);
+}
+
 int main(int ac, char **av)
 {
 	char	**content;
@@ -111,7 +129,8 @@ int main(int ac, char **av)
 	if (data.Direction == 'S')
 		data.angle = 3 * PI/2;
 	draw_2d(&data);
-	mlx_hook(data.window, 2, 0, keys, &data);
+	mlx_hook(data.window, 2, (1L<<0), keys, &data);
+	mlx_hook(data.window, 3, (1L<<1), key_rel, &data);
 	mlx_hook(data.window, 17, 0, quit, NULL);
 	mlx_loop(data.mlx);
 	return (0);
@@ -133,5 +152,3 @@ int main(int ac, char **av)
 	// printf("##%d##\n", data.Y);
 	// printf("##%d##\n", data.MAX_LINE);
 	// printf("##%d##\n", data.num_lines);
-
-	

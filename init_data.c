@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:57:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/12 13:20:35 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:57:23 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ void	init_data(t_data *data)
 	data->X_player = -1;
 	data->Y_player = -1;
 	data->empty_lines = 0;
-	data->pixel_x = 0;
-	data->pixel_y = 0;
+	data->w_pressed = 0;
+	data->a_pressed = 0;
+	data->s_pressed = 0;
+	data->d_pressed = 0;
+	data->larr_pressed = 0;
+	data->rarr_pressed = 0;
 }

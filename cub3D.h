@@ -3,30 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/12 16:55:16 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:09:28 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include <math.h>
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <mlx.h>
-#include "libft/libft.h"
+# include <math.h>
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <mlx.h>
+# include "libft/libft.h"
 
-#define BUFFER_SIZE 1000000000
-#define H 900
-#define W 1300
-#define SQ 30
-#define PI 3.142857
+# define BUFFER_SIZE 1000000000
+# define H 900
+# define W 1300
+# define SQ 30
+# define PI 3.142857
+
+typedef struct s_ray
+{
+	int		up;
+	int		down;
+	int		left;
+	int		right;
+	float	x_wall;
+	float	y_wall;
+	float	angle;
+}		t_ray;
 
 typedef struct s_data
 {
@@ -39,8 +50,8 @@ typedef struct s_data
 	int		Floor[3];
 	int		sky[3];
 	int		MAX_LINE;
-	int		X_player;
-	int		Y_player;
+	float	X_player;
+	float	Y_player;
 	void	*img;
 	void	*window;
 	void	*mlx;
@@ -51,27 +62,15 @@ typedef struct s_data
 	int		color;
 	int		num_lines;
 	int		empty_lines;
-	float	pixel_x;
-	float	pixel_y;
 	float	angle;
-}t_data;
-// typedef struct s_mlx
-// {
-// 	void	*img;
-// 	void	*window;
-// 	void	*mlx;
-// 	char	*addr;
-// 	int		bits_per_pixel;
-// 	int		line_length;
-// 	int		endian;
-// 	int		color;
-// 	int		x;
-// 	int		y;
-// }t_data;
-// typedef struct s_data
-// {
-	
-// }t_data;
+	int		w_pressed;
+	int		a_pressed;
+	int		s_pressed;
+	int		d_pressed;
+	int		larr_pressed;
+	int		rarr_pressed;
+	t_ray	rays[W];
+}			t_data;
 
 //extract_line
 void	extract_line(char **content, t_data *data);
@@ -105,7 +104,8 @@ char	*get_next_line(int fd);
 //draw_2d
 void	draw_2d(t_data *data);
 //keys
-int	keys(int key, t_data *data);
+int		keys(int key, t_data *data);
+void	more_keys(int key, t_data *data);
 //main
-int	dubstrlen(char **content);
+int		dubstrlen(char **content);
 #endif

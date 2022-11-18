@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/12 14:39:53 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/17 16:36:01 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,93 @@
 
 void	more_keys(int key, t_data *data)
 {
-	if (key == 123)
+	if (data->larr_pressed == 1)
 		data->angle -= 0.1;
-	if (key == 124)
+	if (data->rarr_pressed == 1)
 		data->angle += 0.1;
 	if (key == 53)
 		exit(0);
+	if (data->angle >= 6.29 || data->angle <= -6.29)
+		data->angle = 0;
 	return ;
 }
 
-int	keys(int key,t_data *data)
+int	check_player_collision(t_data *data)
 {
-	if (key == 1
-		&& (data->map[(int)round(data->Y_player + data->pixel_y + 0.2)]
-			[(int)round(data->X_player + data->pixel_x - 0.1)] != '1'
-			&& data->map[(int)round(data->Y_player + data->pixel_y + 0.2)]
-			[(int)round(data->X_player + data->pixel_x + 0.1)] != '1')) // keyword 'S'
+	float	x;
+	float	y;
+
+	x = data->X_player;
+	y = data->Y_player;
+	if (data->w_pressed == 1)
 	{
-		//if (data->map[data->X_player + 1][data->Y_player] != '1')
-			data->pixel_y += 0.1;
+		x += (cos(data->angle) * 0.2);
+		y += (sin(data->angle) * 0.2);
 	}
-	if (key == 13
-		&& data->map[(int)round(data->Y_player + data->pixel_y - 0.2)]
-		[(int)round(data->X_player + data->pixel_x - 0.1)] != '1'
-			&& data->map[(int)round(data->Y_player + data->pixel_y - 0.2)]
-			[(int)round(data->X_player + data->pixel_x + 0.1)] != '1') // keyword 'W'
+	if (data->a_pressed == 1)
 	{
-		//if (data->map[data->X_player - 1][data->Y_player] != '1')
-			data->pixel_y -= 0.1;
+		x += (sin(data->angle) * 0.2);
+		y += (cos(data->angle) * (-0.2));
 	}
-	if (key == 2 && data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x + 0.2)] != '1') // keyword 'D'
+	if (data->s_pressed == 1)
 	{
-		//if (data->map[data->X_player][data->Y_player + 1] != '1')
-			data->pixel_x += 0.1;
+		x += (cos(data->angle) * (-0.2));
+		y += (sin(data->angle) * (-0.2));
 	}
-	if (key == 0 && data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x - 0.2)] != '1') //keyword 'A'
+	if (data->d_pressed == 1)
 	{
-		//if (data->map[data->X_player][data->Y_player - 1] != '1')
-			data->pixel_x -= 0.1;
+		x += (sin(data->angle) * (-0.2));
+		y += (cos(data->angle) * 0.2);
+	}
+	if (data->map[(int)round(y)][(int)round(x)] == '0')
+		return (1);
+	return (0);
+}
+
+int	register_keys(int key, t_data *data)
+{
+	if (key == 13)
+		data->w_pressed = 1;
+	if (key == 0)
+		data->a_pressed = 1;
+	if (key == 1)
+		data->s_pressed = 1;
+	if (key == 2)
+		data->d_pressed = 1;
+	if (key == 124)
+		data->rarr_pressed = 1;
+	if (key == 123)
+		data->larr_pressed = 1;
+	printf("w %d s %d rarr %d larr %d\n", data->w_pressed, data->s_pressed, data->rarr_pressed, data->larr_pressed);
+	return (1);
+}
+
+int	keys(int key, t_data *data)
+{
+	register_keys(key, data);
+	if (check_player_collision(data))
+	{
+		if (data->w_pressed == 1)
+		{
+			data->X_player += (cos(data->angle) * 0.1);
+			data->Y_player += (sin(data->angle) * 0.1);
+		}
+		if (data->a_pressed == 1)
+		{
+			data->X_player += (sin(data->angle) * 0.1);
+			data->Y_player += (cos(data->angle) * (-0.1));
+		}
+		if (data->s_pressed == 1)
+		{
+			data->X_player += (cos(data->angle) * (-0.1));
+			data->Y_player += (sin(data->angle) * (-0.1));
+		}
+		if (data->d_pressed == 1)
+		{
+			data->X_player += (sin(data->angle) * (-0.1));
+			data->Y_player += (cos(data->angle) * 0.1);
+		}
 	}
 	more_keys(key, data);
-	mlx_destroy_image(data->mlx, data->img);
-	draw_2d(data);
-	return (0);
+	return (mlx_destroy_image(data->mlx, data->img), draw_2d(data), 0);
 }

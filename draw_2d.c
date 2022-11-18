@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/12 16:59:36 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:57:44 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	dda(t_data *data, float x, float y, float x1, float y1)
 	float	step_x;
 	float	step_y;
 	float	max_v;
-	int i = 0;  
+	int i = 0;
 
 	step_x = x1 - x;
 	step_y = y1 - y;
@@ -139,51 +139,13 @@ void	cercle(float Xc, float Yc, float r, t_data *data)
     }
 }
 
-typedef struct s_point
-{
-	double x;
-	double y;
-	/* data */
-} t_point;
-
-
-void	put_line(t_data *cub, t_point player, t_point end)
-{
-	t_point	var;
-	float	dx;
-	float	dy;
-	float	steps;
-	int		i;
-
-	// displacement(cub, &player.x, 'x');
-	// displacement(cub, &player.y, 'y');
-	// displacement(cub, &end.x, 'x');
-	// displacement(cub, &end.y, 'y');
-	dx = (float)(end.x - player.x);
-	dy = (float)(end.y - player.y);
-	steps = fmax(fabs(dy), fabs(dx));
-	dx = dx / steps;
-	dy = dy / steps;
-	var.x = player.x;
-	var.y = player.y;
-	i = 1;
-	while (i <= steps)
-	{
-		my_mlx_pixel_put(cub, round(var.x), round(var.y));
-		var.x += dx;
-		var.y += dy;
-		i++;
-	}
-}
-
 void	draw_2d(t_data *data)
 {
-	int x,y = 0;
-	// int x_of_player;
-	// int y_of_player;
-	int point_x;
-	int point_y;
-	
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
 	image(data);
 	
 	while (y < data->num_lines)
@@ -193,30 +155,15 @@ void	draw_2d(t_data *data)
 		{
 			color(data, x, y);
 			rectangle(x, y, data);
-			// if (data->X_player == y && data->Y_player == x)
-			// {
-			// 	x_of_player = x;
-			// 	y_of_player = y;
-			// }
 			x++;
 		}
 		y++;
 	}
 	data->color = 0x0000ff;
-	printf("X_pla = %d   Y_pla %d  position_x = %f  position_y = %f   angle = %f\n",data->X_player,data->Y_player,data->pixel_x,data->pixel_y, data->angle);
-	// float r = 5;
-	// while (r >= 0)
-	// if (data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)] != '1')
-		my_mlx_pixel_put(data, (data->X_player + data->pixel_x) * SQ + SQ / 2, (data->Y_player + data->pixel_y) * SQ + SQ / 2);
-	printf("%c\n", data->map[(int)round(data->Y_player + data->pixel_y)][(int)round(data->X_player + data->pixel_x)]);
-	point_x = ((data->X_player + data->pixel_x) * SQ + (( (((data->X_player + 1 + data->pixel_x)) * SQ) - ((data->X_player + data->pixel_x) * SQ) )/2));
-	point_y = ((data->Y_player + data->pixel_y) * SQ + (( (((data->Y_player + 1 + data->pixel_y)) * SQ) - ((data->Y_player + data->pixel_y) * SQ) )/2));
+	printf("X_pla = %f Y_pla %f angle = %f\n",data->X_player,data->Y_player, data->angle);/////delete
+	my_mlx_pixel_put(data, (data->X_player * SQ) + SQ / 2, (data->Y_player * SQ) + SQ / 2);
 	data->color = 0xff00ff;
-	dda(data, ((data->X_player + data->pixel_x) * SQ) + SQ/2, ((data->Y_player + data->pixel_y) * SQ) + SQ/2, \
-	((data->X_player+ data->pixel_x) * SQ) + SQ/2 + cos(data->angle) * 20, ((data->Y_player+ data->pixel_y) * SQ) + SQ/2 + sin(data->angle) * 20);
-	//dda(data, (data->X_player * SQ) + SQ/2 + (data->pixel_x * SQ), point_y, data->Y_player * (SQ*12) + (data->pixel_x * SQ),point_y);
-	//dda(data, (x_of_player) * (SQ) + (SQ * 5) , point_y, x_of_player * (SQ) + SQ/2,point_y);
-	//dda(data, point_x , y_of_player * (SQ) + SQ/2, point_x,(y_of_player) * (SQ) + (SQ * 5) );
-	//dda(data, point_x, y_of_player * (SQ) + SQ/2 * sin(PI/2), point_x,(y_of_player) * (SQ) + (SQ * 5) * cos(0));
+	dda(data, (data->X_player * SQ) + SQ / 2, (data->Y_player * SQ) + SQ / 2, \
+	(data->X_player * SQ) + SQ / 2 + cos(data->angle) * 20, (data->Y_player * SQ) + SQ / 2 + sin(data->angle) * 20);
 	mlx_put_image_to_window(data->mlx, data->window, data->img, 0, 0);
 }
