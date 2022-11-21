@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/17 17:09:28 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:01:36 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,21 @@
 # define H 900
 # define W 1300
 # define SQ 30
-# define PI 3.142857
+
+typedef struct s_index
+{
+	float	x;
+	float	y;
+	float	var;
+} t_index;
+
+typedef struct s_int_idx
+{
+	int	x;
+	int	y;
+} t_int_idx;
+
+
 
 typedef struct s_ray
 {
@@ -69,6 +83,10 @@ typedef struct s_data
 	int		d_pressed;
 	int		larr_pressed;
 	int		rarr_pressed;
+	double	ray_hor_inter_x;
+	double	ray_hor_inter_y;
+	double	ray_ver_inter_x;
+	double	ray_ver_inter_y;
 	t_ray	rays[W];
 }			t_data;
 
@@ -103,6 +121,7 @@ void	init_data(t_data *data);
 char	*get_next_line(int fd);
 //draw_2d
 void	draw_2d(t_data *data);
+double	distance(double x, double y, double x1, double y1);
 //keys
 int		keys(int key, t_data *data);
 void	more_keys(int key, t_data *data);

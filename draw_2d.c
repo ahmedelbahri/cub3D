@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/16 13:57:44 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/11/21 17:36:06 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,116 @@ void	cercle(float Xc, float Yc, float r, t_data *data)
     }
 }
 
+int	checkIsWall(t_data *data, t_index inter, int check, int face)
+{
+	t_int_idx	index;
+
+	if (face == 1)
+		inter.y += check;
+	else
+		inter.x += check;
+	if (inter.y > data->num_lines * SQ)
+		return (0);
+	if (inter.x > data->MAX_LINE * SQ)
+		return (0);
+	index.x = floor(inter.x / SQ);
+	index.y = floor(inter.y / SQ);
+	
+	if (index.y < 0 || index.y >= data->num_lines)
+		return (0);
+	if (index.x < 0 || index.x >= data->MAX_LINE)
+		return (0);
+	if (data->map[index.y][index.x] == '1')
+		return (0);
+	return (1);
+}
+
+double distance(double x, double y, double x1, double y1)
+{
+	return (sqrt(pow(x1 - x, 2) + pow(y1 - y, 2)));
+}
+
+double	horizontal_inter(t_data *data,t_index player, double angle)
+{
+	t_index	first;
+	t_index	steps;
+	double	ray_hor_inter_dis = -1;
+	int		ray_hor_wall = 0;
+	int		check = 0;
+	// int	ray_isdown;
+	// int	ray_isleft;
+
+	first.y = floor(player.y / SQ) * SQ;
+	if ((angle > 0 && angle < M_PI)) // down
+		first.y += SQ;
+	first.x = player.x + (first.y - player.y) / tan(angle);
+	steps.y = SQ;
+	if (!(angle > 0 && angle < M_PI))
+	{
+		steps.y *= -1;
+		check = -1;
+	}
+	steps.x = steps.y / tan(angle);
+	if ((angle < 0.5 * M_PI || angle > 1.5 * M_PI) && steps.x < 0)
+		steps.x *= -1;
+	if (!(angle < 0.5 * M_PI || angle > 1.5 * M_PI) && steps.x > 0)
+		steps.x *= -1;
+	while (checkIsWall(data, first, check, 1))//first.x >= 0 && first.x <= W && first.y >= 0 && first.y <= H
+	{
+		first.x += steps.x;
+		first.y += steps.y;
+	}
+			data->ray_hor_inter_x = first.x;
+			data->ray_hor_inter_y = first.y;
+			ray_hor_wall = 1;
+	if (ray_hor_wall)
+		ray_hor_inter_dis = distance(player.x, player.y, first.x, first.y);
+	return (ray_hor_inter_dis);
+}
+double	vertical_inter(t_data *data,t_index player, double angle)
+{
+	t_index	first;
+	t_index	steps;
+	
+	double	ray_ver_inter_dis = -1;
+	int		ray_ver_wall = 0;
+	int		check = 0;
+	// int	ray_isdown;
+	// int	ray_isleft;
+
+	first.x = floor(player.x / SQ) * SQ;
+	if ((angle < 0.5 * M_PI || angle > 1.5 * M_PI))
+		first.x += SQ;
+	first.y = player.y + (first.x - player.x) * tan(angle);
+	steps.x = SQ;
+	if (!(angle < 0.5 * M_PI || angle > 1.5 * M_PI))//left
+	{
+		steps.x *= -1;
+		check = -1;
+	}
+	steps.y = steps.x * tan(angle);
+	if (!(angle > 0 && angle < M_PI) && steps.y > 0)
+		steps.y *= -1;
+	if ((angle > 0 && angle < M_PI) && steps.y < 0)
+		steps.y *= -1;
+	while (checkIsWall(data, first, check, 0))//first.x >= 0 && first.x <= W && first.y >= 0 && first.y <= H
+	{
+		first.x += steps.x;
+		first.y += steps.y;
+	}
+			data->ray_ver_inter_x = first.x;
+			data->ray_ver_inter_y = first.y;
+			//ray_ver_inter_var = ditance;
+			ray_ver_wall = 1;
+	if (ray_ver_wall)
+		ray_ver_inter_dis = distance(player.x, player.y, first.x, first.y);
+	return (ray_ver_inter_dis);
+}
+/// after comparaison
+// save :
+// wall_inter.x = best.x;
+// wall_inter.y = best.y;
+
 void	draw_2d(t_data *data)
 {
 	int	x;
@@ -160,10 +270,51 @@ void	draw_2d(t_data *data)
 		y++;
 	}
 	data->color = 0x0000ff;
-	printf("X_pla = %f Y_pla %f angle = %f\n",data->X_player,data->Y_player, data->angle);/////delete
+	//printf("X_pla = %f Y_pla %f angle = %f\n",(data->X_player * SQ) + SQ / 2,(data->Y_player * SQ) + SQ / 2, data->angle);/////delete
 	my_mlx_pixel_put(data, (data->X_player * SQ) + SQ / 2, (data->Y_player * SQ) + SQ / 2);
-	data->color = 0xff00ff;
-	dda(data, (data->X_player * SQ) + SQ / 2, (data->Y_player * SQ) + SQ / 2, \
-	(data->X_player * SQ) + SQ / 2 + cos(data->angle) * 20, (data->Y_player * SQ) + SQ / 2 + sin(data->angle) * 20);
+	data->color = 0x000000;
+	// double px = (data->X_player * SQ) + SQ / 2;
+	// double py = (data->Y_player * SQ) + SQ / 2;
+	// ************************************************************************* //
+	// ************************************************************************* //
+	// ************************************************************************* //
+	// ************************************************************************* //
+	t_index	player;
+	double	ray_hor_inter_dis;
+	double	ray_ver_inter_dis;
+	
+	player.y = (data->Y_player * SQ) + SQ / 2;
+	player.x = (data->X_player * SQ) + SQ / 2;
+	//dda(data, player.x, player.y, player.x + cos(data->angle) * 10, player.x + sin(data->angle) * 10);
+	data->angle = fmod(data->angle, (2 * M_PI));
+	if (data->angle < 0)
+		data->angle = data->angle + (2 * M_PI);
+	double	ray_angle = data->angle - (30 * (M_PI/180));
+	ray_angle = fmod(ray_angle, (2 * M_PI));
+	if (ray_angle < 0)
+		ray_angle = ray_angle + (2 * M_PI);
+	
+	
+	dda(data, player.x, player.y, player.x + cos(data->angle) * 20, player.y + sin(data->angle) * 20);
+	for(int i = 0; i < W ;i++)
+	{
+		ray_hor_inter_dis = horizontal_inter(data, player, ray_angle);
+		ray_ver_inter_dis = vertical_inter(data, player, ray_angle);
+		if (ray_hor_inter_dis < ray_ver_inter_dis)
+			dda(data, player.x, player.y, data->ray_hor_inter_x, data->ray_hor_inter_y);
+		else
+			dda(data, player.x, player.y, data->ray_ver_inter_x, data->ray_ver_inter_y);
+		ray_angle += (60 * (M_PI/180)/W);
+	}
+	
+
+	// ************************************************************************* //
+	// ************************************************************************* //
+	// ************************************************************************* //
+	// ************************************************************************* //
+	
+	//dda(data, px, py, px + cos(data->angle) * SQ, py + sin(data->angle) * SQ);
+	//dda(data, px, py, ax + xstep, ay - ystep);
+	// printf("X--  %f    Y--  %f\n", floor((ax + xstep)/SQ), floor((ay - ystep)/SQ));
 	mlx_put_image_to_window(data->mlx, data->window, data->img, 0, 0);
 }
