@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/21 14:04:35 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/21 18:27:38 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,12 @@ int main(int ac, char **av)
 	if (data.Direction == 'N')
 		data.angle = M_PI/2;
 	if (data.Direction == 'E')
+	{
 		data.angle = 0;
+		data.angle = fmod(data.angle, (2 * M_PI));
+		if (data.angle < 0)
+			data.angle = data.angle + (2 * M_PI);
+	}
 	if (data.Direction == 'W')
 		data.angle = M_PI;
 	if (data.Direction == 'S')

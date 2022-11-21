@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/21 17:36:06 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:13:29 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,9 @@ double	horizontal_inter(t_data *data,t_index player, double angle)
 	// int	ray_isdown;
 	// int	ray_isleft;
 
+	angle = fmod(angle, (2 * M_PI));
+	if (angle < 0)
+		angle = angle + (2 * M_PI);
 	first.y = floor(player.y / SQ) * SQ;
 	if ((angle > 0 && angle < M_PI)) // down
 		first.y += SQ;
@@ -216,6 +219,9 @@ double	vertical_inter(t_data *data,t_index player, double angle)
 	// int	ray_isdown;
 	// int	ray_isleft;
 
+	angle = fmod(angle, (2 * M_PI));
+	if (angle < 0)
+		angle = angle + (2 * M_PI);
 	first.x = floor(player.x / SQ) * SQ;
 	if ((angle < 0.5 * M_PI || angle > 1.5 * M_PI))
 		first.x += SQ;
@@ -272,7 +278,7 @@ void	draw_2d(t_data *data)
 	data->color = 0x0000ff;
 	//printf("X_pla = %f Y_pla %f angle = %f\n",(data->X_player * SQ) + SQ / 2,(data->Y_player * SQ) + SQ / 2, data->angle);/////delete
 	my_mlx_pixel_put(data, (data->X_player * SQ) + SQ / 2, (data->Y_player * SQ) + SQ / 2);
-	data->color = 0x000000;
+	
 	// double px = (data->X_player * SQ) + SQ / 2;
 	// double py = (data->Y_player * SQ) + SQ / 2;
 	// ************************************************************************* //
@@ -286,18 +292,18 @@ void	draw_2d(t_data *data)
 	player.y = (data->Y_player * SQ) + SQ / 2;
 	player.x = (data->X_player * SQ) + SQ / 2;
 	//dda(data, player.x, player.y, player.x + cos(data->angle) * 10, player.x + sin(data->angle) * 10);
-	data->angle = fmod(data->angle, (2 * M_PI));
-	if (data->angle < 0)
-		data->angle = data->angle + (2 * M_PI);
+	// data->angle = fmod(data->angle, (2 * M_PI));
+	// if (data->angle < 0)
+	// 	data->angle = data->angle + (2 * M_PI);
 	double	ray_angle = data->angle - (30 * (M_PI/180));
-	ray_angle = fmod(ray_angle, (2 * M_PI));
-	if (ray_angle < 0)
-		ray_angle = ray_angle + (2 * M_PI);
-	
-	
-	dda(data, player.x, player.y, player.x + cos(data->angle) * 20, player.y + sin(data->angle) * 20);
+	// ray_angle = fmod(ray_angle, (2 * M_PI));
+	// if (ray_angle < 0)
+	// 	ray_angle = ray_angle + (2 * M_PI);
+	data->color = 0xffff00;
 	for(int i = 0; i < W ;i++)
 	{
+		if (ray_angle == 0)
+			printf("**** %f\n", ray_angle);
 		ray_hor_inter_dis = horizontal_inter(data, player, ray_angle);
 		ray_ver_inter_dis = vertical_inter(data, player, ray_angle);
 		if (ray_hor_inter_dis < ray_ver_inter_dis)
@@ -306,6 +312,8 @@ void	draw_2d(t_data *data)
 			dda(data, player.x, player.y, data->ray_ver_inter_x, data->ray_ver_inter_y);
 		ray_angle += (60 * (M_PI/180)/W);
 	}
+	data->color = 0xff0000;
+	dda(data, player.x, player.y, player.x + cos(data->angle) * 20, player.y + sin(data->angle) * 20);
 	
 
 	// ************************************************************************* //

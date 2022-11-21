@@ -6,7 +6,7 @@
 /*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/21 14:04:49 by akadi            ###   ########.fr       */
+/*   Updated: 2022/11/21 18:26:00 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	more_keys(int key, t_data *data)
 	if (data->larr_pressed == 1)
 	{
 		data->angle -= 0.1;
-		data->angle = fmod(data->angle, (2 * M_PI));
-		if (data->angle < 0)
-		data->angle = data->angle + (2 * M_PI);
+		// data->angle = fmod(data->angle, (2 * M_PI));
+		// if (data->angle < 0)
+		// data->angle = data->angle + (2 * M_PI);
 	}
 	if (data->rarr_pressed == 1)
 	{
 		data->angle += 0.1;
-		data->angle = fmod(data->angle, (2 * M_PI));
-		if (data->angle < 0)
-		data->angle = data->angle + (2 * M_PI);
+		// data->angle = fmod(data->angle, (2 * M_PI));
+		// if (data->angle < 0)
+		// data->angle = data->angle + (2 * M_PI);
 	}
 	if (key == 53)
 		exit(0);
