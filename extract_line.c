@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:46:12 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:46:21 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:14:40 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	check_color_line(char *line, t_data *data)
 {
-	if (layerOneChecker(line) && layerTwoChecker(line) \
-	&& layerThreeChecker(line, data))
+	if (layeronechecker(line) && layertwochecker(line) \
+		&& layerthreechecker(line, data))
 		return ;
 	else
 	{
@@ -67,10 +67,10 @@ void	check_line(char *line, t_data *data)
 	else if (line[0])
 	{
 		printf("map Error\n");
-		exit(1) ;
+		exit(1);
 	}
 	else
-		data->empty_lines+=1;
+		data->pars.empty_lines += 1;
 }
 
 int	lines_before_map(char *content)
@@ -80,8 +80,8 @@ int	lines_before_map(char *content)
 	i = 0;
 	while (content[i])
 	{
-		if (content[i] != '1' && content[i] != ' ' && content[i] != '\t' 
-		&& content[i] != '*')
+		if (content[i] != '1' && content[i] != ' ' && content[i] != '\t'
+			&& content[i] != '*')
 			return (0);
 		i++;
 	}
@@ -90,8 +90,8 @@ int	lines_before_map(char *content)
 
 void	extract_line(char **content, t_data *data)
 {
-	int	i;
-	char *line;
+	int		i;
+	char	*line;
 
 	i = -1;
 	while (content[++i])

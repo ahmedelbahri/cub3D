@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:09:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/02 12:10:02 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:17:41 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	color_is_valid(char *color)
 		if (is_space(color[i]))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (!ft_isdigit(color[i]))
-			return(0);
+			return (0);
 		i++;
 	}
 	num = ft_atoi(color);

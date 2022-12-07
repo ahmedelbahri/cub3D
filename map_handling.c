@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:52:35 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/06 17:48:47 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:16:57 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ void	check_map_error(t_data *data)
 		j = 0;
 		while (data->map[i][j])
 		{
-			if (i + 1 == data->num_lines && !lines_before_map(data->map[i]))
+			if (i + 1 == data->pars.num_lines \
+				&& !lines_before_map(data->map[i]))
 			{
 				printf("mapppp EEError\n");
 				exit(1);
 			}
-			if (data->map[i][j] == '0' && !check_up_down(data, i , j))
+			if (data->map[i][j] == '0' && !check_up_down(data, i, j))
 			{
 				printf("mapppp Error\n");
 				exit(1);
@@ -51,24 +52,24 @@ int	check_up_down(t_data *data, int i, int j)
 
 void	malloc_map(t_data *data, char **content, int i)
 {
-	int	k;
-	int	z;
+	int		k;
+	int		z;
 	char	*trim;
 
 	k = -1;
-	data->num_lines = data->num_lines - i;
-	data->map = malloc(sizeof(char *) * data->num_lines + 1);
-	while (++k < data->num_lines)
-		data->map[k] = malloc(sizeof(char) * data->MAX_LINE + 1);
+	data->pars.num_lines = data->pars.num_lines - i;
+	data->map = malloc(sizeof(char *) * data->pars.num_lines + 1);
+	while (++k < data->pars.num_lines)
+		data->map[k] = malloc(sizeof(char) * data->pars.max_line + 1);
 	k = -1;
-	while (++k < data->num_lines)
+	while (++k < data->pars.num_lines)
 	{
 		trim = ft_strtrim(content[i], "\n");
-		z = ft_strlcpy(data->map[k], trim, data->MAX_LINE + 1);
-		while (z < data->MAX_LINE)
+		z = ft_strlcpy(data->map[k], trim, data->pars.max_line + 1);
+		while (z < data->pars.max_line)
 		{
 			data->map[k][z] = '*';
-			if (z + 1 == data->MAX_LINE)
+			if (z + 1 == data->pars.max_line)
 				data->map[k][z + 1] = '\0';
 			z++;
 		}
@@ -87,8 +88,8 @@ void	tallest_line(char **content, int i, t_data *data)
 	{
 		trim = ft_strtrim(content[i], "\n");
 		len = ft_strlen(trim);
-		if(data->MAX_LINE < len)
-			data->MAX_LINE = len;
+		if (data->pars.max_line < len)
+			data->pars.max_line = len;
 		i++;
 		free(trim);
 	}
@@ -96,21 +97,19 @@ void	tallest_line(char **content, int i, t_data *data)
 
 void	condition(char **content, int i, t_data *data)
 {
-	if (i - data->empty_lines -1 < 5)
+	if (i - data->pars.empty_lines -1 < 5)
 	{
 		printf("Missing / Error\n");
 		exit(1);
 	}
 	else
 	{
-		// map...
 		tallest_line(content, i, data);
 		malloc_map(data, content, i);
 		fill_map_with_z(data);
 		check_map_error(data);
-		if (!data->Direction)
+		if (!data->player.direction)
 		{
-			
 			printf("no direction\n");
 			exit(1);
 		}

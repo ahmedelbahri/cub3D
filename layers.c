@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   layers.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:49:20 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/02 12:10:22 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:15:10 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int		layerOneChecker(char *line)
+int	layeronechecker(char *line)
 {
 	if (num_of_comma(line) == 2 && (line[0] == 'F' || line[0] == 'C') \
 	&& (line[1] == ' ' || line[1] == '\t'))
@@ -20,9 +20,9 @@ int		layerOneChecker(char *line)
 	return (0);
 }
 
-int		layerTwoChecker(char *line)
+int	layertwochecker(char *line)
 {
-	int i;
+	int	i;
 
 	i = 2;
 	while (line[i] && is_space(line[i]))
@@ -36,7 +36,7 @@ int		layerTwoChecker(char *line)
 	return (1);
 }
 
-int		layerThreeChecker(char *line, t_data *data)
+int	layerthreechecker(char *line, t_data *data)
 {
 	int			j;
 	int			i;
@@ -58,7 +58,7 @@ int		layerThreeChecker(char *line, t_data *data)
 				return (0);
 			else
 				fill_color(line[0], ft_substr(line, j, i - j), data, k++);
-			j = i+1;
+			j = i + 1;
 		}
 		i++;
 	}

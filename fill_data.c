@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:00:06 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/10 16:32:38 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/07 21:10:06 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	fill_color(char line, char *sub, t_data *data, int k)
 {
 	if (line == 'C')
 	{
-		data->sky[k] = ft_atoi(sub);
+		data->texture.sky[k] = ft_atoi(sub);
 		free(sub);
 	}
 	if (line == 'F')
 	{
-		data->Floor[k] = ft_atoi(sub);
+		data->texture.floor[k] = ft_atoi(sub);
 		free(sub);
 	}
 }
@@ -49,20 +49,20 @@ void	fill_direction(t_data *data, int k, int s)
 {
 	if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
 		data->map[k][s] = '*';
-	else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' 
+	else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' \
 	|| data->map[k][s] == 'W' || data->map[k][s] == 'N')
 	{
-		if (data->Direction)
+		if (data->player.direction)
 		{
 			printf("Direction full\n");
 			exit(1);
 		}
-		data->Direction = data->map[k][s];
-		data->X_player = s;
-		data->Y_player = k;
+		data->player.direction = data->map[k][s];
+		data->player.x = s;
+		data->player.y = k;
 		data->map[k][s] = '0';
 	}
-	else if (data->map[k][s] != '0' && data->map[k][s] != '1' 
+	else if (data->map[k][s] != '0' && data->map[k][s] != '1' \
 	&& data->map[k][s] != '*')
 	{
 		printf("invalid map\n");
@@ -72,14 +72,14 @@ void	fill_direction(t_data *data, int k, int s)
 
 void	condition_texture(t_data *data, char direction, char *line)
 {
-	if (data->SO == NULL && direction == 'S')
-		data->SO = ft_strdup(line);
-	else if (data->NO == NULL && direction == 'N')
-		data->NO = ft_strdup(line);
-	else if (data->EA == NULL && direction == 'E')
-		data->EA = ft_strdup(line);
-	else if (data->WE == NULL && direction == 'W')
-		data->WE = ft_strdup(line);
+	if (data->coord.so == NULL && direction == 'S')
+		data->coord.so = ft_strdup(line);
+	else if (data->coord.no == NULL && direction == 'N')
+		data->coord.no = ft_strdup(line);
+	else if (data->coord.ea == NULL && direction == 'E')
+		data->coord.ea = ft_strdup(line);
+	else if (data->coord.we == NULL && direction == 'W')
+		data->coord.we = ft_strdup(line);
 	else
 	{
 		printf("Duplicate\n");

@@ -3,64 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/21 18:26:00 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:11:43 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	more_keys(int key, t_data *data)
+void	more_keys(t_data *data)
 {
-	if (data->larr_pressed == 1)
-	{
-		data->angle -= 0.1;
-		// data->angle = fmod(data->angle, (2 * M_PI));
-		// if (data->angle < 0)
-		// data->angle = data->angle + (2 * M_PI);
-	}
-	if (data->rarr_pressed == 1)
-	{
-		data->angle += 0.1;
-		// data->angle = fmod(data->angle, (2 * M_PI));
-		// if (data->angle < 0)
-		// data->angle = data->angle + (2 * M_PI);
-	}
-	if (key == 53)
-		exit(0);
-	if (data->angle >= 6.29 || data->angle <= -6.29)
-		data->angle = 0;
+	if (data->events.larr_pressed == 1)
+		data->player.angle -= SPEED;
+	if (data->events.rarr_pressed == 1)
+		data->player.angle += SPEED;
+	if (data->player.angle >= 6.29 || data->player.angle <= -6.29)
+		data->player.angle = 0;
 	return ;
 }
 
 int	check_player_collision(t_data *data)
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 
-	x = data->X_player;
-	y = data->Y_player;
-	if (data->w_pressed == 1)
+	x = data->player.x;
+	y = data->player.y;
+	if (data->events.w_pressed == 1)
 	{
-		x += (cos(data->angle) * 0.2);
-		y += (sin(data->angle) * 0.2);
+		x += (cos(data->player.angle) * (SPEED * 2));
+		y += (sin(data->player.angle) * (SPEED * 2));
 	}
-	if (data->a_pressed == 1)
+	if (data->events.a_pressed == 1)
 	{
-		x += (sin(data->angle) * 0.2);
-		y += (cos(data->angle) * (-0.2));
+		x += (sin(data->player.angle) * (SPEED * 2));
+		y += (cos(data->player.angle) * (-(SPEED * 2)));
 	}
-	if (data->s_pressed == 1)
+	if (data->events.s_pressed == 1)
 	{
-		x += (cos(data->angle) * (-0.2));
-		y += (sin(data->angle) * (-0.2));
+		x += (cos(data->player.angle) * (-(SPEED * 2)));
+		y += (sin(data->player.angle) * (-(SPEED * 2)));
 	}
-	if (data->d_pressed == 1)
+	if (data->events.d_pressed == 1)
 	{
-		x += (sin(data->angle) * (-0.2));
-		y += (cos(data->angle) * 0.2);
+		x += (sin(data->player.angle) * (-(SPEED * 2)));
+		y += (cos(data->player.angle) * (SPEED * 2));
 	}
 	if (data->map[(int)round(y)][(int)round(x)] == '0')
 		return (1);
@@ -70,47 +58,47 @@ int	check_player_collision(t_data *data)
 int	register_keys(int key, t_data *data)
 {
 	if (key == 13)
-		data->w_pressed = 1;
+		data->events.w_pressed = 1;
 	if (key == 0)
-		data->a_pressed = 1;
+		data->events.a_pressed = 1;
 	if (key == 1)
-		data->s_pressed = 1;
+		data->events.s_pressed = 1;
 	if (key == 2)
-		data->d_pressed = 1;
+		data->events.d_pressed = 1;
 	if (key == 124)
-		data->rarr_pressed = 1;
+		data->events.rarr_pressed = 1;
 	if (key == 123)
-		data->larr_pressed = 1;
-	printf("w %d s %d rarr %d larr %d\n", data->w_pressed, data->s_pressed, data->rarr_pressed, data->larr_pressed);
+		data->events.larr_pressed = 1;
 	return (1);
 }
 
-int	keys(int key, t_data *data)
+int	keys(t_data *data)
 {
-	register_keys(key, data);
 	if (check_player_collision(data))
 	{
-		if (data->w_pressed == 1)
+		if (data->events.w_pressed == 1)
 		{
-			data->X_player += (cos(data->angle) * 0.1);
-			data->Y_player += (sin(data->angle) * 0.1);
+			data->player.x += (cos(data->player.angle) * SPEED);
+			data->player.y += (sin(data->player.angle) * SPEED);
 		}
-		if (data->a_pressed == 1)
+		if (data->events.a_pressed == 1)
 		{
-			data->X_player += (sin(data->angle) * 0.1);
-			data->Y_player += (cos(data->angle) * (-0.1));
+			data->player.x += (sin(data->player.angle) * SPEED);
+			data->player.y += (cos(data->player.angle) * (-SPEED));
 		}
-		if (data->s_pressed == 1)
+		if (data->events.s_pressed == 1)
 		{
-			data->X_player += (cos(data->angle) * (-0.1));
-			data->Y_player += (sin(data->angle) * (-0.1));
+			data->player.x += (cos(data->player.angle) * (-SPEED));
+			data->player.y += (sin(data->player.angle) * (-SPEED));
 		}
-		if (data->d_pressed == 1)
+		if (data->events.d_pressed == 1)
 		{
-			data->X_player += (sin(data->angle) * (-0.1));
-			data->Y_player += (cos(data->angle) * 0.1);
+			data->player.x += (sin(data->player.angle) * (-SPEED));
+			data->player.y += (cos(data->player.angle) * SPEED);
 		}
 	}
-	more_keys(key, data);
-	return (mlx_destroy_image(data->mlx, data->img), draw_2d(data), 0);
+	more_keys(data);
+	mlx_destroy_image(data->mlx.ptr, data->mlx.img);
+	draw_2d(data);
+	return (0);
 }

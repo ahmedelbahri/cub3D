@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akadi <akadi@student.42.fr>                +#+  +:+       +#+         #
+#    By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/08 12:59:18 by ahel-bah          #+#    #+#              #
-#    Updated: 2022/11/12 17:12:38 by akadi            ###   ########.fr        #
+#    Updated: 2022/12/07 20:28:36 by ahel-bah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
 C = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 NAME = cub3D
 SRC = main.c map_handling.c utils.c layers.c keys.c init_data.c get_next_line.c \
 fill_data.c extract_line.c draw_2d.c

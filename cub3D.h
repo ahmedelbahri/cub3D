@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/11/21 14:01:36 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/07 21:14:40 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,72 +23,101 @@
 # include "libft/libft.h"
 
 # define BUFFER_SIZE 1000000000
-# define H 900
 # define W 1300
-# define SQ 30
+# define H 1000
+# define SQ 50
+# define FOV 60
+# define SPEED 0.05
 
 typedef struct s_index
 {
 	float	x;
 	float	y;
 	float	var;
-} t_index;
+}			t_index;
 
 typedef struct s_int_idx
 {
 	int	x;
 	int	y;
-} t_int_idx;
+}		t_int_idx;
 
-
-
-typedef struct s_ray
+typedef struct s_coordination
 {
-	int		up;
-	int		down;
-	int		left;
-	int		right;
-	float	x_wall;
-	float	y_wall;
-	float	angle;
-}		t_ray;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+}			t_coordination;
 
-typedef struct s_data
+typedef struct s_events
 {
-	char	*NO;
-	char	*SO;
-	char	*WE;
-	char	*EA;
-	char	**map;
-	char	Direction;
-	int		Floor[3];
-	int		sky[3];
-	int		MAX_LINE;
-	float	X_player;
-	float	Y_player;
-	void	*img;
-	void	*window;
-	void	*mlx;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		color;
-	int		num_lines;
-	int		empty_lines;
-	float	angle;
 	int		w_pressed;
 	int		a_pressed;
 	int		s_pressed;
 	int		d_pressed;
 	int		larr_pressed;
 	int		rarr_pressed;
+}			t_events;
+
+typedef struct s_mlx
+{
+	void	*ptr;
+	void	*img;
+	void	*win;
+	char	*addr;
+	int		endian;
+	int		line_length;
+	int		bits_per_pixel;
+}			t_mlx;
+
+typedef struct s_player
+{
+	float	x;
+	float	y;
+	double	angle;
+	char	direction;
+}			t_player;
+
+typedef struct s_texture
+{
+	int		h;
+	int		w;
+	void	*ptr;
+	int		sky[3];
+	int		floor[3];
+	int		endian;
+	int		line_length;
+	int		bits_per_pixel;
+}			t_texture;
+
+typedef struct s_intersection
+{
 	double	ray_hor_inter_x;
 	double	ray_hor_inter_y;
 	double	ray_ver_inter_x;
 	double	ray_ver_inter_y;
-	t_ray	rays[W];
-}			t_data;
+}			t_intersection;
+
+typedef struct s_parsing
+{
+	int		max_line;
+	int		num_lines;
+	int		empty_lines;
+}			t_parsing;
+
+typedef struct s_data
+{
+	char			**map;
+	int				color;
+	t_mlx			mlx;
+	t_parsing		pars;
+	t_coordination	coord;
+	t_intersection	inter;
+	t_player		player;
+	t_events		events;
+	t_texture		texture;
+}					t_data;
 
 //extract_line
 void	extract_line(char **content, t_data *data);
@@ -102,9 +131,9 @@ void	fill_color(char line, char *sub, t_data *data, int k);
 void	fill_direction(t_data *data, int k, int s);
 void	condition_texture(t_data *data, char direction, char *line);
 //layers
-int		layerOneChecker(char *line);
-int		layerTwoChecker(char *line);
-int		layerThreeChecker(char *line, t_data *data);
+int		layeronechecker(char *line);
+int		layertwochecker(char *line);
+int		layerthreechecker(char *line, t_data *data);
 //map_handling
 void	check_map_error(t_data *data);
 int		check_up_down(t_data *data, int i, int j);
@@ -120,11 +149,13 @@ void	init_data(t_data *data);
 //get_next_line
 char	*get_next_line(int fd);
 //draw_2d
-void	draw_2d(t_data *data);
+int		register_keys(int key, t_data *data);
+int		draw_2d(t_data *data);
+void	image(t_data *file);
 double	distance(double x, double y, double x1, double y1);
 //keys
-int		keys(int key, t_data *data);
-void	more_keys(int key, t_data *data);
+int		keys(t_data *data);
+void	more_keys(t_data *data);
 //main
 int		dubstrlen(char **content);
 #endif
