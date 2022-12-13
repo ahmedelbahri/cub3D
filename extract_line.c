@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:46:12 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 21:14:40 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:36:50 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	lines_before_map(char *content)
 	i = 0;
 	while (content[i])
 	{
-		if (content[i] != '1' && content[i] != ' ' && content[i] != '\t'
+		if (content[i] != '1' && content[i] != ' ' && content[i] != '\t' \
 			&& content[i] != '*')
 			return (0);
 		i++;

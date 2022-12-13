@@ -6,7 +6,7 @@
 #    By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/08 12:59:18 by ahel-bah          #+#    #+#              #
-#    Updated: 2022/12/07 20:28:36 by ahel-bah         ###   ########.fr        #
+#    Updated: 2022/12/11 16:50:52 by ahel-bah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ C = gcc
 CFLAGS = -Wall -Wextra -Werror
 NAME = cub3D
 SRC = main.c map_handling.c utils.c layers.c keys.c init_data.c get_next_line.c \
-fill_data.c extract_line.c draw_2d.c
+fill_data.c extract_line.c draw_2d.c key_check.c map_utils.c intersection.c \
+mlx_utils.c mlx_utils2.c 
 OBJ = $(SRC:.c=.o)
 # BNS = 
 # B_OBJ = $(BNS:.c=.o)

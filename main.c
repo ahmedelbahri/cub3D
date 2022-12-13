@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 19:06:47 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/13 00:53:00 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,95 +15,6 @@
 int	quit(void)
 {
 	exit(0);
-	return (0);
-}
-
-int	check_argument_error(int ac, char **av)
-{
-	if (ac != 2)
-		return (-1);
-	if (!ft_strnstr(av[1], ".cub", ft_strlen(av[1])))
-		return (-1);
-	return (0);
-}
-
-int	dubstrlen(char **content)
-{
-	int	i;
-
-	i = 0;
-	while (content[i] != NULL)
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin_read(char *s1, char *s2)
-{
-	char	*p;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (!s1)
-		return (NULL);
-	p = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (p == NULL)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		p[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-	{
-		p[i] = s2[j];
-		i++;
-		j++;
-	}
-	p[i] = '\0';
-	return (free(s1), free(s2), p);
-}
-
-char	**read_map(char *av)
-{
-	char	**content;
-	char	*buffer;
-	char	*save;
-	int		fd;
-
-	fd = open(av, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	save = ft_strdup("");
-	buffer = get_next_line(fd);
-	while (buffer)
-	{
-		save = ft_strjoin_read(save, buffer);
-		buffer = get_next_line(fd);
-	}
-	content = ft_split(save, '\n');
-	free(save);
-	close(fd);
-	return (content);
-}
-
-int	key_rel(int key, t_data *data)
-{
-	if (key == 13)
-		data->events.w_pressed = 0;
-	else if (key == 0)
-		data->events.a_pressed = 0;
-	else if (key == 1)
-		data->events.s_pressed = 0;
-	else if (key == 2)
-		data->events.d_pressed = 0;
-	else if (key == 124)
-		data->events.rarr_pressed = 0;
-	else if (key == 123)
-		data->events.larr_pressed = 0;
-	else if (key == 53)
-		exit(0);
 	return (0);
 }
 
@@ -147,8 +58,26 @@ void	ft_mlx(t_data *data)
 
 void	ft_texture(t_data *data)
 {
-	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, "./0.xpm", \
-		&data->texture.w, &data->texture.h);
+	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, data->coord.we,
+			&data->texture.w, &data->texture.h);
+	data->proj.we = (int *)mlx_get_data_addr(data->texture.ptr, \
+		&data->texture.bits_per_pixel, &data->texture.line_length, \
+			&data->texture.endian);
+	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, data->coord.ea,
+			&data->texture.w, &data->texture.h);
+	data->proj.ea = (int *)mlx_get_data_addr(data->texture.ptr, \
+		&data->texture.bits_per_pixel, &data->texture.line_length, \
+			&data->texture.endian);
+	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, data->coord.no,
+			&data->texture.w, &data->texture.h);
+	data->proj.no = (int *)mlx_get_data_addr(data->texture.ptr, \
+		&data->texture.bits_per_pixel, &data->texture.line_length, \
+			&data->texture.endian);
+	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, data->coord.so,
+			&data->texture.w, &data->texture.h);
+	data->proj.so = (int *)mlx_get_data_addr(data->texture.ptr, \
+		&data->texture.bits_per_pixel, &data->texture.line_length, \
+			&data->texture.endian);
 }
 
 int	main(int ac, char **av)
