@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:27:18 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/16 17:34:00 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:20:56 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ double	horizontal_inter(t_data *data, t_index player, double angle)
 	int		check;
 
 	check = 0;
-	angle = fmod(angle, (2 * M_PI));
-	if (angle < 0)
-		angle = angle + (2 * M_PI);
+	angle = normalize_angle(angle);
 	data->first.y = floor(player.y / SQ) * SQ;
 	if ((angle > 0 && angle < M_PI))
 		data->first.y += SQ;
@@ -63,11 +61,7 @@ double	horizontal_inter(t_data *data, t_index player, double angle)
 		data->steps.x *= -1;
 	if (!(angle < 0.5 * M_PI || angle > 1.5 * M_PI) && data->steps.x > 0)
 		data->steps.x *= -1;
-	while (checkiswall(data, data->first, check, 1))
-	{
-		data->first.x += data->steps.x;
-		data->first.y += data->steps.y;
-	}
+	loop_check_wall_h(data, check);
 	data->inter.ray_hor_inter_x = data->first.x;
 	data->inter.ray_hor_inter_y = data->first.y;
 	return (distance(player.x, player.y, data->first.x, data->first.y));
@@ -78,9 +72,7 @@ double	vertical_inter(t_data *data, t_index player, double angle)
 	int		check;
 
 	check = 0;
-	angle = fmod(angle, (2 * M_PI));
-	if (angle < 0)
-		angle = angle + (2 * M_PI);
+	angle = normalize_angle(angle);
 	data->first.x = floor(player.x / SQ) * SQ;
 	if ((angle < 0.5 * M_PI || angle > 1.5 * M_PI))
 		data->first.x += SQ;
@@ -96,11 +88,7 @@ double	vertical_inter(t_data *data, t_index player, double angle)
 		data->steps.y *= -1;
 	if ((angle > 0 && angle < M_PI) && data->steps.y < 0)
 		data->steps.y *= -1;
-	while (checkiswall(data, data->first, check, 0))
-	{
-		data->first.x += data->steps.x;
-		data->first.y += data->steps.y;
-	}
+	loop_check_wall_v(data, check);
 	data->inter.ray_ver_inter_x = data->first.x;
 	data->inter.ray_ver_inter_y = data->first.y;
 	return (distance(player.x, player.y, data->first.x, data->first.y));

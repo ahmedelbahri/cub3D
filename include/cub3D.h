@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 20:23:55 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:18:22 by akadi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,5 +198,9 @@ double	vertical_inter(t_data *data, t_index player, double angle);
 void	draw_line(t_data *data, int x, int y, int y2);
 void	image(t_data *file);
 void	my_mlx_pixel_put(t_data *cor, int i, int j);
+//normalize
+double	normalize_angle(double angle);
+void	loop_check_wall_h(t_data *data, int check);
+void	loop_check_wall_v(t_data *data, int check);
 
 #endif
