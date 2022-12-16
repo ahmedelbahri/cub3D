@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:49:20 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 21:15:10 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 int	layeronechecker(char *line)
 {

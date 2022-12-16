@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:46:12 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/12 21:36:50 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:43:18 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D.h"
 
 void	check_color_line(char *line, t_data *data)
 {
@@ -19,7 +19,7 @@ void	check_color_line(char *line, t_data *data)
 		return ;
 	else
 	{
-		printf("Error color");
+		printf("Error\n Misconfigured color");
 		exit(1);
 	}
 }
@@ -31,13 +31,16 @@ void	check_each_line(char *line, char *direction, t_data *data)
 
 	i = -1;
 	if ((!ft_strncmp(line, direction, 3) || !ft_strncmp(&line[2], "\t", 1)) \
-	&& ft_strnstr(line, "./texture/", ft_strlen(line)))
+	&& ft_strnstr(line, "./../texture/", ft_strlen(line)))
 	{
-		line = ft_strnstr(line, "./texture/", ft_strlen(line));
+		line = ft_strnstr(line, "./../texture/", ft_strlen(line));
 		fd = open(line, O_RDONLY);
-		if (fd < 0)
+		if (fd < 0 || (ft_strcmp(line, "./../texture/SO.xpm")
+				&& ft_strcmp(line, "./../texture/NO.xpm")
+				&& ft_strcmp(line, "./../texture/WE.xpm")
+				&& ft_strcmp(line, "./../texture/EA.xpm")))
 		{
-			printf("FILE ERROR\n");
+			printf("Error\n Texture file error");
 			exit(1);
 		}
 		close(fd);
@@ -45,7 +48,7 @@ void	check_each_line(char *line, char *direction, t_data *data)
 	}
 	else
 	{
-		printf("ERROR ---\n");
+		printf("ERROR\n Texture file error");
 		exit(1);
 	}
 }
@@ -66,7 +69,7 @@ void	check_line(char *line, t_data *data)
 		check_color_line(line, data);
 	else if (line[0])
 	{
-		printf("map Error\n");
+		printf("Error\nMap Error");
 		exit(1);
 	}
 	else

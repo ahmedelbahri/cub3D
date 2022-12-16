@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:24:57 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/09 15:26:43 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:34:00 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D.h"
 
 int	register_keys(int key, t_data *data)
 {

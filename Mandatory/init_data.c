@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:57:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 19:04:28 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:34:00 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D.h"
 
 void	init_data(t_data *data)
 {

@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:09:07 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 21:17:41 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:25:40 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 int	is_space(char line)
 {
@@ -54,4 +54,37 @@ int	num_of_comma(char *line)
 		if (line[i] == ',')
 			j++;
 	return (j);
+}
+
+void	free_dub(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
+}
+
+int	mouse(int x, int y, t_data *data)
+{
+	data->color = 0;
+	if (x < 0 || x > W || y < 0 || y > H)
+		return (0);
+	if (x < W / 2)
+	{
+		data->events.larr_pressed = 1;
+		more_keys(data);
+		data->events.larr_pressed = 0;
+	}
+	else if (x > W / 2)
+	{
+		data->events.rarr_pressed = 1;
+		more_keys(data);
+		data->events.rarr_pressed = 0;
+	}
+	return (0);
 }

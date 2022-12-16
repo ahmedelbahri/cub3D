@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/13 00:53:00 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:26:15 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 int	quit(void)
 {
@@ -23,12 +23,13 @@ int	ft_parser(int ac, char **av, t_data *data)
 	char	**content;
 
 	if (check_argument_error(ac, av) == -1)
-		return (printf("ERROR Argument"), -1);
+		return (printf("Error\n Invalid argument"), -1);
 	content = read_map(av[1]);
 	if (!content)
-		return (printf("ERROR Argumenttt"), -1);
+		return (printf("Error\n Invalid argument"), -1);
 	data->pars.num_lines = dubstrlen(content);
 	extract_line(content, data);
+	free_dub(content);
 	if (data->player.direction == 'N')
 		data->player.angle = M_PI / 2;
 	if (data->player.direction == 'E')
@@ -51,6 +52,7 @@ void	ft_mlx(t_data *data)
 	draw_2d(data);
 	mlx_hook(data->mlx.win, 2, 0, register_keys, data);
 	mlx_hook(data->mlx.win, 3, 0, key_rel, data);
+	mlx_hook(data->mlx.win, 6, 0, mouse, data);
 	mlx_hook(data->mlx.win, 17, 0, quit, NULL);
 	mlx_loop_hook(data->mlx.ptr, keys, data);
 	mlx_loop(data->mlx.ptr);
@@ -78,6 +80,10 @@ void	ft_texture(t_data *data)
 	data->proj.so = (int *)mlx_get_data_addr(data->texture.ptr, \
 		&data->texture.bits_per_pixel, &data->texture.line_length, \
 			&data->texture.endian);
+	data->texture.c = ((data->texture.sky[0] & 0xff) << 16) + \
+	((data->texture.sky[1] & 0xff) << 8) + (data->texture.sky[2] & 0xff);
+	data->texture.f = ((data->texture.floor[0] & 0xff) << 16) + \
+	((data->texture.floor[1] & 0xff) << 8) + (data->texture.floor[2] & 0xff);
 }
 
 int	main(int ac, char **av)

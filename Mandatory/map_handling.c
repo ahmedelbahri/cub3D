@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:52:35 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 21:16:57 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:05:41 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D.h"
 
 void	check_map_error(t_data *data)
 {
@@ -26,12 +26,12 @@ void	check_map_error(t_data *data)
 			if (i + 1 == data->pars.num_lines \
 				&& !lines_before_map(data->map[i]))
 			{
-				printf("mapppp EEError\n");
+				printf("Error\n Map error");
 				exit(1);
 			}
 			if (data->map[i][j] == '0' && !check_up_down(data, i, j))
 			{
-				printf("mapppp Error\n");
+				printf("Error\n Map error");
 				exit(1);
 			}
 			j++;
@@ -99,7 +99,7 @@ void	condition(char **content, int i, t_data *data)
 {
 	if (i - data->pars.empty_lines -1 < 5)
 	{
-		printf("Missing / Error\n");
+		printf("Error\n Missing data");
 		exit(1);
 	}
 	else
@@ -110,7 +110,7 @@ void	condition(char **content, int i, t_data *data)
 		check_map_error(data);
 		if (!data->player.direction)
 		{
-			printf("no direction\n");
+			printf("Error\n no direction");
 			exit(1);
 		}
 	}

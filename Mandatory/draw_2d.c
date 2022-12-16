@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/13 01:11:58 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:49:40 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D.h"
 
 void	ft_wich_texture(t_data *data)
 {
@@ -50,9 +50,9 @@ void	project(t_data *data, double dist, int ray_i, float hit)
 		my_mlx_pixel_put(data, ray_i, data->proj.line);
 		data->proj.line++;
 	}
-	data->color = 0x6B6B6B;
+	data->color = data->texture.c;
 	draw_line(data, ray_i, 0, data->proj.y);
-	data->color = 0xA9A9A9;
+	data->color = data->texture.f;
 	draw_line(data, ray_i, data->proj.wall_height_stripe + data->proj.y, H);
 }
 
@@ -65,7 +65,6 @@ void	ft_cast_rays(t_data *data, t_index player)
 	{
 		data->inter.hor_dis = horizontal_inter(data, player, data->inter.angle);
 		data->inter.ver_dis = vertical_inter(data, player, data->inter.angle);
-		data->color = 0xFFFF00;
 		if (data->inter.hor_dis < data->inter.ver_dis)
 		{
 			data->proj.v_n_h = 1;
@@ -85,22 +84,12 @@ void	ft_cast_rays(t_data *data, t_index player)
 
 int	draw_2d(t_data *data)
 {
-	t_index	player;
-
 	mlx_clear_window(data->mlx.ptr, data->mlx.win);
 	image(data);
-	data->color = 0x0000FF;
-	player.y = (data->player.y * SQ) + SQ / 2;
-	player.x = (data->player.x * SQ) + SQ / 2;
+	data->player_i.y = (data->player.y * SQ) + SQ / 2;
+	data->player_i.x = (data->player.x * SQ) + SQ / 2;
 	data->inter.angle = data->player.angle - ((FOV / 2) * (M_PI / 180));
-	ft_cast_rays(data, player);
-	data->color = 0x000000;
-	ft_draw_map(data);
-	dda(data, &player, ((player.x / 5) + \
-		cos(data->player.angle) * (SQ / 5) / 2 * 2), ((player.y / 5) + \
-			sin(data->player.angle) * (SQ / 5) / 3 * 2));
-	cercle(player.x - cos(data->player.angle) * (SQ / 5) / 2 * 2, \
-		player.y - sin(data->player.angle) * (SQ / 5) / 3 * 2, 2, data);
+	ft_cast_rays(data, data->player_i);
 	mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, data->mlx.img, 0, 0);
 	return (0);
 }

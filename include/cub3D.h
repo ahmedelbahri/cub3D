@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/13 01:08:52 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:23:55 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,24 @@
 # include <math.h>
 # include <string.h>
 # include <stdio.h>
-# include <unistd.h>
+# include <unistd.h> 
 # include <stdlib.h>
 # include <fcntl.h>
 # include <mlx.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
-# define BUFFER_SIZE 1000000000
+# define BUFFER_SIZE 1
 # define W 1280
 # define H 960
 # define SQ 50
 # define FOV 60
+# define MAP_S 30
 # define SPEED 0.1
 
 typedef struct s_index
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }			t_index;
 
 typedef struct s_int_idx
@@ -82,6 +83,8 @@ typedef struct s_texture
 {
 	int		h;
 	int		w;
+	long	f;
+	long	c;
 	void	*ptr;
 	int		sky[3];
 	int		floor[3];
@@ -128,6 +131,7 @@ typedef struct s_data
 {
 	char			**map;
 	int				color;
+	t_index			player_i;
 	t_mlx			mlx;
 	t_parsing		pars;
 	t_coordination	coord;
@@ -165,6 +169,7 @@ void	condition(char **content, int i, t_data *data);
 int		is_space(char line);
 int		color_is_valid(char *color);
 int		num_of_comma(char *line);
+void	free_dub(char **s);
 // init_data
 void	init_data(t_data *data);
 // get_next_line
@@ -191,13 +196,7 @@ double	horizontal_inter(t_data *data, t_index player, double angle);
 double	vertical_inter(t_data *data, t_index player, double angle);
 // mlx_utils.c
 void	draw_line(t_data *data, int x, int y, int y2);
-void	cercle(float xc, float yc, float r, t_data *data);
-void	rectangle(int x, int y, t_data *data);
-void	color(t_data *data, int x, int y);
-// mlx_utils2.c
 void	image(t_data *file);
 void	my_mlx_pixel_put(t_data *cor, int i, int j);
-void	ft_draw_map(t_data *data);
-void	dda(t_data *data, t_index *player, float x1, float y1);
 
 #endif

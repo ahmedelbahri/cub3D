@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:48:51 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/12 19:20:45 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	my_mlx_pixel_put(t_data *cor, int i, int j)
 {
@@ -32,21 +32,30 @@ void	image(t_data *file)
 			&file->mlx.line_length, &file->mlx.endian);
 }
 
-void	ft_draw_map(t_data *data)
+void	ft_mini_map(t_data *data, t_index *player)
 {
-	int	x;
-	int	y;
+	double	y;
+	double	x;
+	int		i;
+	int		j;
 
 	x = 0;
-	y = 0;
-	while (y < data->pars.num_lines)
+	y = (player->y / SQ) - MAP_S / 2;
+	data->color = 0x000000;
+	j = -1;
+	while (++j < MAP_S)
 	{
-		x = 0;
-		while (x < data->pars.max_line)
+		i = -1;
+		x = (player->x / SQ) - MAP_S / 2;
+		while (++i < MAP_S)
 		{
-			color(data, x, y);
-			rectangle(x, y, data);
 			x++;
+			if (x >= 0 && y >= 0
+				&& x < data->pars.max_line && y < dubstrlen(data->map))
+			{
+				color(data, x, y);
+				rectangle(i, j, data);
+			}
 		}
 		y++;
 	}
@@ -59,26 +68,26 @@ float	max(float a, float b)
 	return (b);
 }
 
-void	dda(t_data *data, t_index *player, float x1, float y1)
+void	ft_direction(t_data *data, double angle)
 {
-	float	step_x;
-	float	step_y;
+	t_index	step;
+	t_index	player;
 	float	max_v;
 	int		i;
 
-	player->x /= 5;
-	player->y /= 5;
-	step_x = x1 - player->x;
-	step_y = y1 - player->y;
-	max_v = max(fabs(step_x), fabs(step_y));
-	step_x /= max_v;
-	step_y /= max_v;
+	player.x = ((MAP_S / 2) - 0.5) * (SQ / 5);
+	player.y = ((MAP_S / 2) + 0.5) * (SQ / 5);
+	step.x = (player.x + (((cos(angle) * (SQ / 5)) / 2) * 5)) - player.x;
+	step.y = player.y + (((sin(angle) * (SQ / 5)) / 2) * 5) - player.y;
+	max_v = max(fabs(step.x), fabs(step.y));
+	step.x /= max_v;
+	step.y /= max_v;
 	i = 0;
 	while (i <= max_v)
 	{
-		my_mlx_pixel_put(data, player->x, player->y);
-		player->x += step_x;
-		player->y += step_y;
+		my_mlx_pixel_put(data, player.x, player.y);
+		player.x += step.x;
+		player.y += step.y;
 		i++;
 	}
 }

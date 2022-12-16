@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:00:06 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/07 21:10:06 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	fill_map_with_z(t_data *data)
 {
@@ -47,7 +47,7 @@ void	fill_color(char line, char *sub, t_data *data, int k)
 
 void	fill_direction(t_data *data, int k, int s)
 {
-	if (data->map[k][s] == ' ' || data->map[k][s] == '\t')
+	if (data->map[k][s] == ' ')
 		data->map[k][s] = '*';
 	else if (data->map[k][s] == 'E' || data->map[k][s] == 'S' \
 	|| data->map[k][s] == 'W' || data->map[k][s] == 'N')
@@ -63,7 +63,7 @@ void	fill_direction(t_data *data, int k, int s)
 		data->map[k][s] = '0';
 	}
 	else if (data->map[k][s] != '0' && data->map[k][s] != '1' \
-	&& data->map[k][s] != '*')
+	&& data->map[k][s] != '*' && data->map[k][s] != '2')
 	{
 		printf("invalid map\n");
 		exit(1);
@@ -82,7 +82,7 @@ void	condition_texture(t_data *data, char direction, char *line)
 		data->coord.we = ft_strdup(line);
 	else
 	{
-		printf("Duplicate\n");
+		printf("Error\n Duplicate symbol");
 		exit(1);
 	}
 }

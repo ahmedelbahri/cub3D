@@ -6,11 +6,11 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:27:18 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/11 16:29:25 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 int	checkiswall(t_data *data, t_index inter, int check, int face)
 {
