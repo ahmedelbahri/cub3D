@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:48:51 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/16 23:24:27 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void	ft_direction(t_data *data, double angle)
 
 	player.x = ((MAP_S / 2) - 0.5) * (SQ / 5);
 	player.y = ((MAP_S / 2) + 0.5) * (SQ / 5);
-	step.x = (player.x + (((cos(angle) * (SQ / 5)) / 2) * 5)) - player.x;
-	step.y = player.y + (((sin(angle) * (SQ / 5)) / 2) * 5) - player.y;
+	step.x = (((cos(angle) * (SQ / 5)) / 2) * 5);
+	step.y = (((sin(angle) * (SQ / 5)) / 2) * 5);
 	max_v = max(fabs(step.x), fabs(step.y));
 	step.x /= max_v;
 	step.y /= max_v;

@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   normalize.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:16:22 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 21:20:37 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/16 22:07:08 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+int	checkiswall(t_data *data, t_index inter, int check, int face)
+{
+	t_int_idx	index;
+
+	if (face == 1)
+		inter.y += check;
+	else
+		inter.x += check;
+	if (inter.y > data->pars.num_lines * SQ)
+		return (0);
+	if (inter.x > data->pars.max_line * SQ)
+		return (0);
+	index.x = floor(inter.x / SQ);
+	index.y = floor(inter.y / SQ);
+	if (index.y < 0 || index.y >= data->pars.num_lines)
+		return (0);
+	if (index.x < 0 || index.x >= data->pars.max_line)
+		return (0);
+	if (data->map[index.y][index.x] == '1')
+		return (0);
+	return (1);
+}
 
 double	normalize_angle(double angle)
 {

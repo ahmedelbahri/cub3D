@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 17:49:40 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:14:56 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_wich_texture(t_data *data)
 void	project(t_data *data, double dist, int ray_i, float hit)
 {
 	dist = dist * cos((data->inter.angle - data->player.angle));
-	data->proj.projection_plane = (W / 2) / tan(FOV / 2 * M_PI / 180);
+	data->proj.projection_plane = H;
 	data->proj.wall_height_stripe = SQ * data->proj.projection_plane / dist;
 	data->proj.y = (H / 2) - (data->proj.wall_height_stripe / 2);
 	data->color = 0xFFFFFF;

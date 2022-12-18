@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 18:21:56 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 20:26:15 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:22:20 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ int	ft_parser(int ac, char **av, t_data *data)
 
 void	ft_mlx(t_data *data)
 {
+	data->texture.ptr = mlx_xpm_file_to_image(data->mlx.ptr, data->coord.door,
+			&data->texture.w, &data->texture.h);
+	data->proj.door = (int *)mlx_get_data_addr(data->texture.ptr, \
+		&data->texture.bits_per_pixel, &data->texture.line_length, \
+			&data->texture.endian);
 	data->mlx.win = mlx_new_window(data->mlx.ptr, W, H, "cub3D");
 	draw_2d(data);
 	mlx_hook(data->mlx.win, 2, 0, register_keys, data);

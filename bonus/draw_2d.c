@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/18 00:19:56 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,34 @@
 
 void	ft_wich_texture(t_data *data)
 {
-	if (data->proj.v_n_h && (((data->inter.angle >= (M_PI)) && \
+	if (data->proj.v_n_h == 0 && data->map[data->inter.map_y_v] \
+	[data->inter.map_x_v] == '2')
+		data->color = data->proj.door[(data->texture.h * \
+		data->proj.offset_y) + data->proj.offset_x];
+	else if (data->proj.v_n_h && data->map[data->inter.map_y_h] \
+	[data->inter.map_x_h] == '2')
+		data->color = data->proj.door[(data->texture.h * \
+		data->proj.offset_y) + data->proj.offset_x];
+	else if (data->proj.v_n_h && (((data->inter.angle >= (M_PI)) && \
 	(data->inter.angle <= (2 * M_PI))) || (data->inter.angle <= (0))))
 		data->color = data->proj.so[(data->texture.h * \
 		data->proj.offset_y) + data->proj.offset_x];
 	else if (data->proj.v_n_h)
 		data->color = data->proj.no[(data->texture.h * \
-		data->proj.offset_y) + \
-		data->proj.offset_x];
+		data->proj.offset_y) + data->proj.offset_x];
 	else if (data->proj.v_n_h == 0 && (data->inter.angle >= (M_PI / 2) \
 		&& (data->inter.angle <= (M_PI * 1.5))))
 		data->color = data->proj.ea[(data->texture.h * \
-		data->proj.offset_y) + \
-		data->proj.offset_x];
+		data->proj.offset_y) + data->proj.offset_x];
 	else
 		data->color = data->proj.we[(data->texture.h * \
-		data->proj.offset_y) + \
-		data->proj.offset_x];
+		data->proj.offset_y) + data->proj.offset_x];
 }
 
 void	project(t_data *data, double dist, int ray_i, float hit)
 {
 	dist = dist * cos((data->inter.angle - data->player.angle));
-	data->proj.projection_plane = (W / 2) / tan(FOV / 2 * M_PI / 180);
+	data->proj.projection_plane = H;
 	data->proj.wall_height_stripe = SQ * data->proj.projection_plane / dist;
 	data->proj.y = (H / 2) - (data->proj.wall_height_stripe / 2);
 	data->color = 0xFFFFFF;
@@ -86,7 +91,6 @@ int	draw_2d(t_data *data)
 {
 	mlx_clear_window(data->mlx.ptr, data->mlx.win);
 	image(data);
-	data->color = 0x0000FF;
 	data->player_i.y = (data->player.y * SQ) + SQ / 2;
 	data->player_i.x = (data->player.x * SQ) + SQ / 2;
 	data->inter.angle = data->player.angle - ((FOV / 2) * (M_PI / 180));
@@ -94,8 +98,7 @@ int	draw_2d(t_data *data)
 	ft_mini_map(data, &data->player_i);
 	data->color = 0x0000FF;
 	ft_direction(data, data->player.angle);
-	cercle((((MAP_S / 2) - 0.5) * (SQ / 5)), \
-		(((MAP_S / 2) + 0.5) * (SQ / 5)), 3, data);
+	rectangle((((MAP_S / 2) - 0.5)), (((MAP_S / 2) + 0.5)), data);
 	mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, data->mlx.img, 0, 0);
 	return (0);
 }

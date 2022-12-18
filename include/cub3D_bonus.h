@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akadi <akadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 21:18:10 by akadi            ###   ########.fr       */
+/*   Updated: 2022/12/17 22:26:10 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_coordination
 	char	*so;
 	char	*we;
 	char	*ea;
+	char	*door;
 }			t_coordination;
 
 typedef struct s_events
@@ -97,6 +98,10 @@ typedef struct s_intersection
 {
 	double	dist;
 	double	angle;
+	int		map_x_h;
+	int		map_y_h;
+	int		map_x_v;
+	int		map_y_v;
 	double	hor_dis;
 	double	ver_dis;
 	double	ray_hor_inter_x;
@@ -119,6 +124,7 @@ typedef struct s_projection
 	int		*so;
 	int		*ea;
 	int		*we;
+	int		*door;
 	int		line;
 	int		v_n_h;
 	int		offset_x;
@@ -198,9 +204,9 @@ double	horizontal_inter(t_data *data, t_index player, double angle);
 double	vertical_inter(t_data *data, t_index player, double angle);
 // mlx_utils.c
 void	draw_line(t_data *data, int x, int y, int y2);
-void	cercle(float xc, float yc, float r, t_data *data);
 void	rectangle(int x, int y, t_data *data);
 void	color(t_data *data, int x, int y);
+void	ft_open_n_close(t_data *data);
 // mlx_utils2.c
 void	image(t_data *file);
 void	my_mlx_pixel_put(t_data *cor, int i, int j);

@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:00:06 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:51:44 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,16 @@ void	fill_direction(t_data *data, int k, int s)
 
 void	condition_texture(t_data *data, char direction, char *line)
 {
+	int	fd;
+
+	fd = open("./../texture/DOOR.xpm", O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error\n missing door texture file.");
+		exit(1);
+	}
+	else
+		data->coord.door = "./../texture/DOOR.xpm";
 	if (data->coord.so == NULL && direction == 'S')
 		data->coord.so = ft_strdup(line);
 	else if (data->coord.no == NULL && direction == 'N')

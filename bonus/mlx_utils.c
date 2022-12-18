@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:31:04 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/17 22:29:23 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	color(t_data *data, int x, int y)
 		data->color = 0xff0000;
 	else if (data->map[y][x] == '*')
 		data->color = 0x000000;
+	else if (data->map[y][x] == '2')
+		data->color = 0xFFFF00;
+	else if (data->map[y][x] == '3')
+		data->color = 0x00FF00;
 }
 
 void	rectangle(int x, int y, t_data *data)
@@ -42,42 +46,6 @@ void	rectangle(int x, int y, t_data *data)
 	}
 }
 
-void	draw_circle(float xc, float yc, t_index *index, t_data *data)
-{
-	data->color = 0x0000ff;
-	my_mlx_pixel_put(data, xc + index->x, yc + index->y);
-	my_mlx_pixel_put(data, xc - index->x, yc + index->y);
-	my_mlx_pixel_put(data, xc + index->x, yc - index->y);
-	my_mlx_pixel_put(data, xc - index->x, yc - index->y);
-	my_mlx_pixel_put(data, xc + index->y, yc + index->x);
-	my_mlx_pixel_put(data, xc - index->y, yc + index->x);
-	my_mlx_pixel_put(data, xc + index->y, yc - index->x);
-	my_mlx_pixel_put(data, xc - index->y, yc - index->x);
-}
-
-void	cercle(float xc, float yc, float r, t_data *data)
-{
-	t_index	index;
-	float	d;
-
-	index.x = 0;
-	index.y = r;
-	d = 3 - 2 * r;
-	draw_circle(xc, yc, &index, data);
-	while (index.y >= index.x)
-	{
-		index.x++;
-		if (d > 0)
-		{
-			index.y--;
-			d = d + 4 * (index.x - index.y) + 10;
-		}
-		else
-			d = d + 4 * index.x + 6;
-		draw_circle(xc, yc, &index, data);
-	}
-}
-
 void	draw_line(t_data *data, int x, int y, int y2)
 {
 	int	i;
@@ -88,4 +56,29 @@ void	draw_line(t_data *data, int x, int y, int y2)
 		my_mlx_pixel_put(data, x, i);
 		i++;
 	}
+}
+
+void	ft_open_n_close(t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = data->player_i.x / SQ;
+	y = data->player_i.y / SQ;
+	if (data->map[y][x + 1] == '2')
+		data->map[y][x + 1] = '3';
+	else if (data->map[y][x + 1] == '3')
+		data->map[y][x + 1] = '2';
+	if (data->map[y + 1][x] == '2')
+		data->map[y + 1][x] = '3';
+	else if (data->map[y + 1][x] == '3')
+		data->map[y + 1][x] = '2';
+	if (data->map[y - 1][x] == '2')
+		data->map[y - 1][x] = '3';
+	else if (data->map[y - 1][x] == '3')
+		data->map[y - 1][x] = '2';
+	if (data->map[y][x - 1] == '2')
+		data->map[y][x - 1] = '3';
+	else if (data->map[y][x - 1] == '3')
+		data->map[y][x - 1] = '2';
 }

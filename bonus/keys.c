@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:54:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/16 20:08:04 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:14:30 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	check_player_collision(t_data *data)
 		y += (cos(data->player.angle) * (-(SPEED * 2)));
 	}
 	collision_s_d(data, &x, &y);
-	if (data->map[(int)round(y)][(int)round(x)] == '0')
+	if (data->map[(int)round(y)][(int)round(x)] == '0'
+		|| data->map[(int)round(y)][(int)round(x)] == '3')
 		return (1);
 	return (0);
 }
