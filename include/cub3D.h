@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/18 00:13:37 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/18 20:13:16 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ typedef struct s_projection
 	int		v_n_h;
 	int		offset_x;
 	int		offset_y;
-	double	projection_plane;
+	double	proj_plane_dist;
 	double	wall_height_stripe;
 }	t_projection;
 

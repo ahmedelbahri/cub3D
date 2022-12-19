@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:29:42 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/18 00:19:56 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/19 17:05:55 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void	ft_wich_texture(t_data *data)
 void	project(t_data *data, double dist, int ray_i, float hit)
 {
 	dist = dist * cos((data->inter.angle - data->player.angle));
-	data->proj.projection_plane = H;
-	data->proj.wall_height_stripe = SQ * data->proj.projection_plane / dist;
+	data->proj.proj_plane_dist = (W / 2) / tan(FOV / 2 * M_PI / 180);
+	data->proj.wall_height_stripe = SQ * data->proj.proj_plane_dist / dist;
 	data->proj.y = (H / 2) - (data->proj.wall_height_stripe / 2);
-	data->color = 0xFFFFFF;
 	data->proj.offset_x = (hit - (int)hit) * (data->texture.w);
 	data->proj.line = data->proj.y;
 	while (data->proj.line < data->proj.wall_height_stripe + data->proj.y)
@@ -87,6 +86,35 @@ void	ft_cast_rays(t_data *data, t_index player)
 	}
 }
 
+void	ft_display_anim(t_data *data)
+{
+	static int	j;
+
+	if (data->events.f_pressed == 0)
+		mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+		data->proj.gun[0], W * 0.35, H * 0.5);
+	if (data->events.f_pressed == 1)
+	{
+		if (j >= 0 && j <= 5)
+			mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+			data->proj.gun[0], W * 0.35, H * 0.5);
+		else if (j >= 6 && j <= 10)
+			mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+			data->proj.gun[1], W * 0.35, H * 0.5);
+		if (j >= 11 && j <= 15)
+			mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+			data->proj.gun[2], W * 0.35, H * 0.5);
+		if (j >= 16 && j <= 20)
+			mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+			data->proj.gun[3], W * 0.35, H * 0.5);
+		if (j >= 21 && j <= 25)
+			mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, \
+			data->proj.gun[4], W * 0.35, H * 0.5);
+		if (++j == 25)
+			j = 0;
+	}
+}
+
 int	draw_2d(t_data *data)
 {
 	mlx_clear_window(data->mlx.ptr, data->mlx.win);
@@ -100,5 +128,6 @@ int	draw_2d(t_data *data)
 	ft_direction(data, data->player.angle);
 	rectangle((((MAP_S / 2) - 0.5)), (((MAP_S / 2) + 0.5)), data);
 	mlx_put_image_to_window(data->mlx.ptr, data->mlx.win, data->mlx.img, 0, 0);
+	ft_display_anim(data);
 	return (0);
 }

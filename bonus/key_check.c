@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:24:57 by ahel-bah          #+#    #+#             */
-/*   Updated: 2022/12/17 20:23:34 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:50:39 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	register_keys(int key, t_data *data)
 {
 	if (key == 49)
 		ft_open_n_close(data);
+	if (key == 3)
+		data->events.f_pressed = 1;
 	if (key == 13)
 		data->events.w_pressed = 1;
 	if (key == 0)
@@ -33,6 +35,8 @@ int	register_keys(int key, t_data *data)
 
 int	key_rel(int key, t_data *data)
 {
+	if (key == 3)
+		data->events.f_pressed = 0;
 	if (key == 13)
 		data->events.w_pressed = 0;
 	else if (key == 0)

@@ -6,7 +6,7 @@
 /*   By: ahel-bah <ahel-bah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:32:01 by akadi             #+#    #+#             */
-/*   Updated: 2022/12/17 22:26:10 by ahel-bah         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:50:51 by ahel-bah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_coordination
 
 typedef struct s_events
 {
+	int		f_pressed;
 	int		w_pressed;
 	int		a_pressed;
 	int		s_pressed;
@@ -125,11 +126,14 @@ typedef struct s_projection
 	int		*ea;
 	int		*we;
 	int		*door;
+	void	*gun[5];
+	int		gun_w;
+	int		gun_h;
 	int		line;
 	int		v_n_h;
 	int		offset_x;
 	int		offset_y;
-	double	projection_plane;
+	double	proj_plane_dist;
 	double	wall_height_stripe;
 }	t_projection;
 
